@@ -7,10 +7,11 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    abstract class FuelTransport : CityTransport
+    abstract class FuelPoweredTransport : Transport
     {
-        private int _max_fuel_amount;
         private int _fuel_amount;
+        public int FuelCapacity { get; set; }
+        public int FuelConsumption { get; set; }
         public int Fuel
         {
             get
@@ -23,7 +24,7 @@ namespace Lab2
                 {
                     throw new Exception("Not enough fuel!");
                 }
-                else if (value > _max_fuel_amount)
+                else if (value > FuelCapacity)
                 {
                     throw new Exception("The tank is full!");
                 }
@@ -34,10 +35,17 @@ namespace Lab2
             }
         }
 
-        public FuelTransport(ID id, string owner_company)
+        public FuelPoweredTransport(ID id, string owner_company, int max_fuel_amount, int fuel_consumption)
             : base(id, owner_company)
         {
+            FuelCapacity = max_fuel_amount;
+            FuelConsumption = fuel_consumption;
+            Fuel = max_fuel_amount;
+        }
 
+        public override void Move()
+        {
+            Fuel -= FuelConsumption;
         }
 
         public override void FillUp(int value)

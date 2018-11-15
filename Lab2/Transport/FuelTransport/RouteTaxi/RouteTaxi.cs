@@ -7,17 +7,19 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    abstract class RouteTaxi : FuelTransport
+    abstract class RouteTaxi : FuelPoweredTransport
     {
-        public RouteTaxi(ID id, string owner_company, Route route)
-            : base(id, owner_company)
+        public RouteTaxi(ID id, string owner_company, Route route, int max_fuel_amount, int fuel_consumption)
+            : base(id, owner_company, max_fuel_amount, fuel_consumption)
         {
             Route = route;
         }
 
         public override string ToString()
         {
-            return base.ToString() + " [" + Route.ToString() + "]";
+            return (Route != null) ?
+                base.ToString() + " [" + Route.ToString() + "]" :
+                base.ToString() + " [Add route!]";
         }
     }
 }

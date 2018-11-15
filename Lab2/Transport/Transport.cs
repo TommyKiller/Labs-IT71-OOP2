@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    abstract class CityTransport
+    abstract class Transport
     {
         public Route Route { get; set; }
         public ID ID { get; }
-        public string Company { get; }
+        public string Company { get; set; }
 
-        public CityTransport(ID id, string owner_company)
+        public Transport(ID id, string owner_company)
         {
             ID = id;
             Company = owner_company;

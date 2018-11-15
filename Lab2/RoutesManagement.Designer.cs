@@ -31,7 +31,7 @@
             this.routes = new System.Windows.Forms.GroupBox();
             this.cancel = new System.Windows.Forms.Button();
             this.editRoute = new System.Windows.Forms.Button();
-            this.exit = new System.Windows.Forms.Button();
+            this.back = new System.Windows.Forms.Button();
             this.save = new System.Windows.Forms.Button();
             this.routeIdIn = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -60,7 +60,7 @@
             // 
             this.routes.Controls.Add(this.cancel);
             this.routes.Controls.Add(this.editRoute);
-            this.routes.Controls.Add(this.exit);
+            this.routes.Controls.Add(this.back);
             this.routes.Controls.Add(this.save);
             this.routes.Controls.Add(this.routeIdIn);
             this.routes.Controls.Add(this.label1);
@@ -94,15 +94,15 @@
             this.editRoute.UseVisualStyleBackColor = true;
             this.editRoute.Click += new System.EventHandler(this.editRoute_Click);
             // 
-            // exit
+            // back
             // 
-            this.exit.Location = new System.Drawing.Point(114, 128);
-            this.exit.Name = "exit";
-            this.exit.Size = new System.Drawing.Size(48, 22);
-            this.exit.TabIndex = 6;
-            this.exit.Text = "Back";
-            this.exit.UseVisualStyleBackColor = true;
-            this.exit.Click += new System.EventHandler(this.exit_Click);
+            this.back.Location = new System.Drawing.Point(114, 128);
+            this.back.Name = "back";
+            this.back.Size = new System.Drawing.Size(48, 22);
+            this.back.TabIndex = 6;
+            this.back.Text = "Back";
+            this.back.UseVisualStyleBackColor = true;
+            this.back.Click += new System.EventHandler(this.exit_Click);
             // 
             // save
             // 
@@ -333,7 +333,7 @@
         private System.Windows.Forms.Button addNewWp;
         private System.Windows.Forms.TextBox newWpAdressIn;
         private System.Windows.Forms.Label newWpAdressLbl;
-        private System.Windows.Forms.Button exit;
+        private System.Windows.Forms.Button back;
         private System.Windows.Forms.Button save;
         private System.Windows.Forms.TextBox routeIdIn;
         private System.Windows.Forms.Label label1;

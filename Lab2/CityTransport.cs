@@ -6,10 +6,10 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    static class Transport
+    static class CityTransport
     {
         public static ApplicationContext Context { get; set; }
-        public static Dictionary<ID, CityTransport> Cars { get; set; }
+        public static Dictionary<ID, Transport> Cars { get; set; }
         public static Dictionary<ID, Route> Routes { get; set; }
         /// <summary>
         /// Главная точка входа для приложения.
@@ -17,7 +17,7 @@ namespace Lab2
         [STAThread]
         static void Main()
         {
-            Cars = new Dictionary<ID, CityTransport>();
+            Cars = new Dictionary<ID, Transport>();
             Routes = new Dictionary<ID, Route>();
 
             Application.EnableVisualStyles();

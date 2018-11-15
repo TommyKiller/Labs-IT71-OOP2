@@ -19,16 +19,16 @@ namespace Lab2
 
         private void editCarBtn_Click(object sender, EventArgs e)
         {
-            Transport.Context.MainForm = new CarsManagement();
+            CityTransport.Context.MainForm = new CarsManagement();
             Close();
-            Transport.Context.MainForm.Show();
+            CityTransport.Context.MainForm.Show();
         }
 
         private void editRouteBtn_Click(object sender, EventArgs e)
         {
-            Transport.Context.MainForm = new RoutesManagement();
+            CityTransport.Context.MainForm = new RoutesManagement();
             Close();
-            Transport.Context.MainForm.Show();
+            CityTransport.Context.MainForm.Show();
         }
 
         private void exitBtn_Click(object sender, EventArgs e)

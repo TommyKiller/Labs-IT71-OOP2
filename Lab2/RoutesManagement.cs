@@ -30,9 +30,9 @@ namespace Lab2
         {
             routesList.Items.Clear();
 
-            foreach (ID id in Transport.Routes.Keys)
+            foreach (ID id in CityTransport.Routes.Keys)
             {
-                routesList.Items.Add(Transport.Routes[id]);
+                routesList.Items.Add(CityTransport.Routes[id]);
             }
 
             if (routesList.Items.Count > 0)
@@ -45,13 +45,6 @@ namespace Lab2
             }
         }
 
-        private void ClearWaypoints()
-        {
-            wpList.Items.Clear();
-            wpList.SelectedIndex = -1;
-            selectedWpAdressIn.Text = string.Empty;
-        }
-
         private void LoadWaypoints()
         {
             ClearWaypoints();
@@ -62,25 +55,29 @@ namespace Lab2
             }
         }
 
-        private void exit_Click(object sender, EventArgs e)
+        private void ClearWaypoints()
         {
-            Transport.Context.MainForm = new MainMenu();
-            Close();
-            Transport.Context.MainForm.Show();
+            wpList.Items.Clear();
+            wpList.SelectedIndex = -1;
+            selectedWpAdressIn.Text = string.Empty;
         }
 
         // Buttnos enabling //
 
         private void EnableRouteSelectionLayout(bool mode)
         {
+            routesList.Enabled = mode;
+            routeIdIn.Enabled = mode;
             editRoute.Enabled = mode;
             deleteRoute.Enabled = mode;
             addNewRoute.Enabled = mode;
-            exit.Enabled = mode;
+            back.Enabled = mode;
         }
 
         private void EnableRouteEditLayout(bool mode)
         {
+            newWpAdressIn.Enabled = mode;
+            selectedWpAdressIn.Enabled = mode;
             addNewWp.Enabled = mode;
             editWp.Enabled = mode;
             deleteWp.Enabled = mode;
@@ -140,7 +137,7 @@ namespace Lab2
                     routesChanged = true;
                     EnableRouteSelectionLayout(false);
                     EnableRouteEditLayout(true);
-                    EnableSaveRoute(false);
+                    EnableSave(false);
                 }
                 else
                 {
@@ -162,6 +159,13 @@ namespace Lab2
             if (routesList.SelectedItem != null)
             {
                 int index = routesList.SelectedIndex;
+                foreach (ID id in CityTransport.Cars.Keys)
+                {
+                    if (CityTransport.Cars[id].Route == (Route)routesList.SelectedItem)
+                    {
+                        CityTransport.Cars[id].Route = null;
+                    }
+                }
                 routesList.Items.Remove(routesList.SelectedItem);
                 routesList.SelectedIndex = index - 1;
                 routesChanged = true;
@@ -183,29 +187,29 @@ namespace Lab2
             {
                 int count = 0;
 
-                foreach (ID id in Transport.Routes.Keys)
+                foreach (ID id in CityTransport.Routes.Keys)
                 {
-                    if (Transport.Routes[id].Equals(route))
+                    if (CityTransport.Routes[id].Equals(route))
                     {
                         ++count;
-                        Transport.Routes[id].Waypoints.Clear();
+                        CityTransport.Routes[id].Waypoints.Clear();
 
                         foreach (Waypoint wp in route.Waypoints)
                         {
-                            Transport.Routes[id].Waypoints.Add(wp);
+                            CityTransport.Routes[id].Waypoints.Add(wp);
                         }
                     }
                 }
 
                 if (count == 0)
                 {
-                    Transport.Routes.Add(route.ID, route);
+                    CityTransport.Routes.Add(route.ID, route);
                 }
             }
 
             Dictionary<ID, Route> tempDict = new Dictionary<ID, Route>();
 
-            foreach (KeyValuePair<ID, Route> item in Transport.Routes)
+            foreach (KeyValuePair<ID, Route> item in CityTransport.Routes)
             {
                 if (!localRoutes.Contains(item))
                 {
@@ -215,7 +219,7 @@ namespace Lab2
 
             foreach (ID id in tempDict.Keys)
             {
-                Transport.Routes.Remove(id);
+                CityTransport.Routes.Remove(id);
             }
 
             routesChanged = false;
@@ -224,15 +228,22 @@ namespace Lab2
         private void cancel_Click(object sender, EventArgs e)
         {
             EnableSave(false);
-            LoadRoutes();
             routesChanged = false;
+            LoadRoutes();
+        }
+
+        private void exit_Click(object sender, EventArgs e)
+        {
+            CityTransport.Context.MainForm = new MainMenu();
+            Close();
+            CityTransport.Context.MainForm.Show();
         }
 
         // Route editor //
 
         private void wpAdressIn_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsLetter(e.KeyChar) && e.KeyChar != 8)
+            if (!char.IsLetter(e.KeyChar) && e.KeyChar != 8 && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -254,7 +265,7 @@ namespace Lab2
         {
             if (selectedWpAdressIn.Text != string.Empty && wpList.SelectedItem != null)
             {
-                wpList.Items.Insert(wpList.SelectedIndex, new Waypoint(selectedWpAdressIn.Text));
+                wpList.Items.Insert(wpList.SelectedIndex, new Waypoint(selectedWpAdressIn.Text.Trim()));
                 wpList.Items.Remove(wpList.SelectedItem);
                 selectedWpAdressIn.Text = string.Empty;
                 EnableSaveRoute(true);
@@ -274,7 +285,7 @@ namespace Lab2
         {
             if (newWpAdressIn.Text != string.Empty)
             {
-                wpList.Items.Add(new Waypoint(newWpAdressIn.Text));
+                wpList.Items.Add(new Waypoint(newWpAdressIn.Text.Trim()));
                 newWpAdressIn.Text = string.Empty;
                 EnableSaveRoute(true);
             }
