@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    abstract class FuelPoweredTransport : Transport
+    public abstract class FuelPoweredTransport : Transport
     {
         private int _fuel_amount;
         public int FuelCapacity { get; set; }

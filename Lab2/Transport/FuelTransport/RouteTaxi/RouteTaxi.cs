@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    abstract class RouteTaxi : FuelPoweredTransport
+    public abstract class RouteTaxi : FuelPoweredTransport
     {
         public RouteTaxi(ID id, string owner_company, Route route, int max_fuel_amount, int fuel_consumption)
             : base(id, owner_company, max_fuel_amount, fuel_consumption)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    class Waypoint : IEquatable<Waypoint>
+    public class Waypoint : IEquatable<Waypoint>
     {
         public string Adress { get; set; }
 

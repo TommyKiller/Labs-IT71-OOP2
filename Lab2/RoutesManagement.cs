@@ -12,7 +12,7 @@ namespace Lab2
 {
     public partial class RoutesManagement : Form
     {
-        private bool routesChanged = false;
+        private bool changesSaved = true;
 
         public RoutesManagement()
         {
@@ -35,14 +35,7 @@ namespace Lab2
                 routesList.Items.Add(CityTransport.Routes[id]);
             }
 
-            if (routesList.Items.Count > 0)
-            {
-                routesList.SelectedIndex = 0;
-            }
-            else
-            {
-                routesList.SelectedIndex = -1;
-            }
+            routesList.SelectedIndex = routesList.Items.Count - 1;
         }
 
         private void LoadWaypoints()
@@ -134,7 +127,7 @@ namespace Lab2
                     routesList.Items.Add(newRoute);
                     routeIdIn.Text = string.Empty;
                     routesList.SelectedIndex = routesList.Items.Count - 1;
-                    routesChanged = true;
+                    changesSaved = false;
                     EnableRouteSelectionLayout(false);
                     EnableRouteEditLayout(true);
                     EnableSave(false);
@@ -159,77 +152,70 @@ namespace Lab2
             if (routesList.SelectedItem != null)
             {
                 int index = routesList.SelectedIndex;
-                foreach (ID id in CityTransport.Cars.Keys)
-                {
-                    if (CityTransport.Cars[id].Route == (Route)routesList.SelectedItem)
-                    {
-                        CityTransport.Cars[id].Route = null;
-                    }
-                }
                 routesList.Items.Remove(routesList.SelectedItem);
                 routesList.SelectedIndex = index - 1;
-                routesChanged = true;
+                changesSaved = false;
                 EnableSave(true);
             }
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-            EnableSave(false);
-
-            Dictionary<ID, Route> localRoutes = new Dictionary<ID, Route>();
-            foreach (Route route in routesList.Items.Cast<Route>())
+            if (!changesSaved)
             {
-                localRoutes.Add(route.ID, route);
-            }
+                EnableSave(false);
 
-            foreach (Route route in routesList.Items.Cast<Route>())
-            {
-                int count = 0;
-
-                foreach (ID id in CityTransport.Routes.Keys)
+                foreach (Route route in routesList.Items.Cast<Route>())
                 {
-                    if (CityTransport.Routes[id].Equals(route))
+                    if (CityTransport.Routes.Contains(new KeyValuePair<ID, Route>(route.ID, route)))
                     {
-                        ++count;
-                        CityTransport.Routes[id].Waypoints.Clear();
+                        CityTransport.Routes[route.ID].Waypoints.Clear();
 
                         foreach (Waypoint wp in route.Waypoints)
                         {
-                            CityTransport.Routes[id].Waypoints.Add(wp);
+                            CityTransport.Routes[route.ID].Waypoints.Add(wp);
                         }
+                    }
+                    else
+                    {
+                        CityTransport.Routes.Add(route.ID, route);
                     }
                 }
 
-                if (count == 0)
+                List<ID> IDList = new List<ID>();
+                foreach (ID id in CityTransport.Routes.Keys)
                 {
-                    CityTransport.Routes.Add(route.ID, route);
+                    if (!routesList.Items.Contains(CityTransport.Routes[id]))
+                    {
+                        IDList.Add(id);
+                    }
                 }
-            }
 
-            Dictionary<ID, Route> tempDict = new Dictionary<ID, Route>();
-
-            foreach (KeyValuePair<ID, Route> item in CityTransport.Routes)
-            {
-                if (!localRoutes.Contains(item))
+                foreach (ID routeID in IDList)
                 {
-                    tempDict.Add(item.Key, item.Value);
+                    foreach (ID carID in CityTransport.Cars.Keys)
+                    {
+                        if (CityTransport.Cars[carID].Route == CityTransport.Routes[routeID])
+                        {
+                            CityTransport.Cars[carID].Route = null;
+                        }
+                    }
+
+                    CityTransport.Routes.Remove(routeID);
                 }
-            }
 
-            foreach (ID id in tempDict.Keys)
-            {
-                CityTransport.Routes.Remove(id);
+                changesSaved = true;
             }
-
-            routesChanged = false;
         }
 
         private void cancel_Click(object sender, EventArgs e)
         {
-            EnableSave(false);
-            routesChanged = false;
-            LoadRoutes();
+            if (!changesSaved)
+            {
+                EnableSave(false);
+                changesSaved = true;
+                LoadRoutes();
+            }
         }
 
         private void exit_Click(object sender, EventArgs e)
@@ -325,7 +311,7 @@ namespace Lab2
                 ((Route)routesList.SelectedItem).Waypoints.Add(wp);
             }
 
-            routesChanged = true;
+            changesSaved = false;
         }
 
         private void cancelRoute_Click(object sender, EventArgs e)
@@ -355,7 +341,7 @@ namespace Lab2
                 newWpAdressIn.Text = string.Empty;
                 EnableRouteSelectionLayout(true);
                 EnableRouteEditLayout(false);
-                if (routesChanged)
+                if (!changesSaved)
                 {
                     EnableSave(true);
                 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    abstract class Transport
+    public abstract class Transport
     {
         public Route Route { get; set; }
         public ID ID { get; }

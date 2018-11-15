@@ -1,6 +1,6 @@
 ﻿namespace Lab2
 {
-    partial class RegisterCarForm
+    partial class EditRouteTaxi
     {
         /// <summary>
         /// Required designer variable.

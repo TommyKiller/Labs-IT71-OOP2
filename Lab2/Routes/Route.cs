@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    class Route : IEquatable<Route>
+    public class Route : IEquatable<Route>
     {
         public ID ID { get; }
         public List<Waypoint> Waypoints { get; }
 
         public Route(ID id)
         {
-            this.ID = id;
+            ID = id;
             Waypoints = new List<Waypoint>();
         }
 

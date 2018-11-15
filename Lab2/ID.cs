@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    class ID : IEquatable<ID>
+    public class ID : IEquatable<ID>
     {
         public int _id_ { get; }
 

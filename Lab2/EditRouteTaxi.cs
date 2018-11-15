@@ -10,12 +10,15 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    public partial class RegisterCarForm : Form
+    public partial class EditRouteTaxi : Form
     {
-        public RegisterCarForm()
+        private RouteTaxi car;
+
+        public EditRouteTaxi(RouteTaxi car = null)
         {
             InitializeComponent();
 
+            Car = car;
             routesList.DropDownStyle = ComboBoxStyle.DropDownList;
             saveChanges.Enabled = false;
             LoadRoutes();
@@ -49,6 +52,18 @@ namespace Lab2
         {
             wpList.Items.Clear();
             wpList.SelectedIndex = -1;
+        }
+
+        public RouteTaxi Car
+        {
+            get
+            {
+                return car;
+            }
+            set
+            {
+                car = (value as RouteTaxi != null) ? value : null;
+            }
         }
 
         // Car editor //

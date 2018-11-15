@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    class CircularRouteTaxi : RouteTaxi
+    public class CircularRouteTaxi : RouteTaxi
     {
         private int _currentwpindex_;
 
