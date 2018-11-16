@@ -48,7 +48,7 @@ namespace Lab2
             switch (typesList.Text)
             {
                 case "Route taxi":
-                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi();
+                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi("Register car");
                     editRouteTaxi.ShowDialog();
                     if (editRouteTaxi.Car != null)
                     {
@@ -62,15 +62,21 @@ namespace Lab2
 
         private void editCar_Click(object sender, EventArgs e)
         {
-            if (carsList.SelectedItem.GetType() == typeof(RouteTaxi))
+            if (carsList.SelectedItem != null)
             {
-                EditRouteTaxi editRouteTaxi = new EditRouteTaxi((RouteTaxi)carsList.SelectedItem);
-                editRouteTaxi.ShowDialog();
-                if (editRouteTaxi.Car != null)
+                if (carsList.SelectedItem.GetType() == typeof(RouteTaxi))
                 {
-                    carsList.Items.Add(editRouteTaxi.Car);
-                    changesSaved = false;
-                    EnableSave(true);
+                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi("Edit car", (RouteTaxi)carsList.SelectedItem);
+                    editRouteTaxi.ShowDialog();
+                    if (editRouteTaxi.Car != null)
+                    {
+                        ((RouteTaxi)carsList.SelectedItem).Company = editRouteTaxi.Car.Company;
+                        ((RouteTaxi)carsList.SelectedItem).FuelCapacity = editRouteTaxi.Car.FuelCapacity;
+                        ((RouteTaxi)carsList.SelectedItem).FuelConsumption = editRouteTaxi.Car.FuelConsumption;
+                        ((RouteTaxi)carsList.SelectedItem).Route = editRouteTaxi.Car.Route;
+                        changesSaved = false;
+                        EnableSave(true);
+                    }
                 }
             }
         }

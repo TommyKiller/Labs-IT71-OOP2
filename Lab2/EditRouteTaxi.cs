@@ -12,48 +12,8 @@ namespace Lab2
 {
     public partial class EditRouteTaxi : Form
     {
+        private bool changesSaved = true;
         private RouteTaxi car;
-
-        public EditRouteTaxi(RouteTaxi car = null)
-        {
-            InitializeComponent();
-
-            Car = car;
-            routesList.DropDownStyle = ComboBoxStyle.DropDownList;
-            saveChanges.Enabled = false;
-            LoadRoutes();
-        }
-
-        private void LoadRoutes()
-        {
-            routesList.Items.Clear();
-
-            int index = -1;
-            foreach (ID id in CityTransport.Routes.Keys)
-            {
-                routesList.Items.Add(CityTransport.Routes[id]);
-                ++index;
-            }
-
-            routesList.SelectedIndex = index;
-        }
-
-        private void LoadWaypoints()
-        {
-            wpList.Items.Clear();
-
-            foreach (Waypoint wp in ((Route)routesList.SelectedItem).Waypoints)
-            {
-                wpList.Items.Add(wp);
-            }
-        }
-
-        private void ClearWaypoints()
-        {
-            wpList.Items.Clear();
-            wpList.SelectedIndex = -1;
-        }
-
         public RouteTaxi Car
         {
             get
@@ -66,12 +26,112 @@ namespace Lab2
             }
         }
 
+        public EditRouteTaxi(string caption, RouteTaxi car = null)
+        {
+            InitializeComponent();
+
+            Text = caption;
+            Car = car;
+            routesList.DropDownStyle = ComboBoxStyle.DropDownList;
+            typesList.DropDownStyle = ComboBoxStyle.DropDownList;
+            typesList.Items.Add("Circular");
+            typesList.Items.Add("Direct");
+            FillData();
+            saveChanges.Enabled = false;
+        }
+
+        private void LoadRoutes()
+        {
+            // Debug
+            MessageBox.Show("Routes loaded!");
+
+            routesList.Items.Clear();
+
+            switch (typesList.SelectedItem.ToString())
+            {
+                case "Circular":
+                    foreach (ID id in CityTransport.Routes.Keys)
+                    {
+                        if (CityTransport.Routes[id].Waypoints.First().Equals(CityTransport.Routes[id].Waypoints.Last()))
+                        {
+                            routesList.Items.Add(CityTransport.Routes[id]);
+                        }
+                    }
+                    break;
+                case "Direct":
+                    foreach (ID id in CityTransport.Routes.Keys)
+                    {
+                        if (!CityTransport.Routes[id].Waypoints.First().Equals(CityTransport.Routes[id].Waypoints.Last()))
+                        {
+                            routesList.Items.Add(CityTransport.Routes[id]);
+                        }
+                    }
+                    break;
+            }
+
+            routesList.SelectedIndex = routesList.Items.Count - 1;
+        }
+
+        private void LoadWaypoints()
+        {
+            wpList.Items.Clear();
+
+            foreach (Waypoint wp in ((Route)routesList.SelectedItem).Waypoints)
+            {
+                wpList.Items.Add(wp);
+            }
+        }
+
+        private void FillData()
+        {
+            if (Car != null)
+            {
+                switch (Car.GetType().ToString())
+                {
+                    case "CircularRouteTaxi":
+                        typesList.SelectedIndex = 0;
+                        break;
+                    case "DirectRouteTaxi":
+                        typesList.SelectedIndex = 1;
+                        break;
+                }
+                typesList.Enabled = false;
+                carIDIn.Text = Car.ID.ToString();
+                carIDIn.Enabled = false;
+                carCompanyIn.Text = Car.Company;
+                fuelCapacityIn.Text = Car.FuelCapacity.ToString();
+                fuelConsumptionIn.Text = Car.FuelConsumption.ToString();
+            }
+        }
+
+        private bool CheckInput()
+        {
+            if (carIDIn.Text == string.Empty)
+                throw new Exception("Enter car's ID!");
+            if (CityTransport.Cars.Keys.Contains(new ID(Convert.ToInt32(carIDIn.Text))))
+                throw new Exception("Car with that ID already exists!");
+            if (carCompanyIn.Text == string.Empty)
+                throw new Exception("Enter car's company name!");
+            if (fuelCapacityIn.Text == string.Empty)
+                throw new Exception("Enter car's fuel capacity!");
+            if (fuelConsumptionIn.Text == string.Empty)
+                throw new Exception("Enter car's fuel consumption rate!");
+            if (Convert.ToInt32(fuelConsumptionIn.Text) > Convert.ToInt32(fuelCapacityIn.Text))
+                throw new Exception("Fuel consumption rate of the car can't be more then it's fuel capacity!");
+            if (typesList.SelectedItem == null)
+                throw new Exception("Choose type of the route!");
+            if (routesList.SelectedItem == null)
+                throw new Exception("Choose route!");
+            return true;
+        }
+
         // Car editor //
 
         private void carCompanyIn_TextChanged(object sender, EventArgs e)
         {
             if (!saveChanges.Enabled)
             {
+                changesSaved = false;
                 saveChanges.Enabled = true;
             }
         }
@@ -94,7 +154,6 @@ namespace Lab2
 
         private void routesList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ClearWaypoints();
             LoadWaypoints();
         }
 
@@ -102,6 +161,7 @@ namespace Lab2
         {
             if (!saveChanges.Enabled)
             {
+                changesSaved = false;
                 saveChanges.Enabled = true;
             }
         }
@@ -110,6 +170,7 @@ namespace Lab2
         {
             if (!saveChanges.Enabled)
             {
+                changesSaved = false;
                 saveChanges.Enabled = true;
             }
         }
@@ -118,41 +179,64 @@ namespace Lab2
         {
             if (!saveChanges.Enabled)
             {
+                changesSaved = false;
                 saveChanges.Enabled = true;
             }
         }
 
         private void saveChanges_Click(object sender, EventArgs e)
         {
-            if (carIDIn.Text != string.Empty && carCompanyIn.Text != string.Empty &&
-                fuelCapacityIn.Text != string.Empty && fuelConsumptionIn.Text != string.Empty &&
-                routesList.SelectedItem != null && routesList.SelectedItem != null)
+            if (!changesSaved)
             {
-                ID ID = new ID(Convert.ToInt32(carIDIn.Text));
-                if (((Route)routesList.SelectedItem).Waypoints.First() == ((Route)routesList.SelectedItem).Waypoints.Last())
+                try
                 {
-                    CircularRouteTaxi car = new CircularRouteTaxi(ID, carCompanyIn.Text.Trim(), (Route)routesList.SelectedItem,
-                        Convert.ToInt32(fuelCapacityIn.Text), Convert.ToInt32(fuelConsumptionIn.Text));
-                    CityTransport.Cars.Add(ID, car);
-                }
-                else
-                {
-                    DirectRouteTaxi car = new DirectRouteTaxi(ID, carCompanyIn.Text, (Route)routesList.SelectedItem,
-                        Convert.ToInt32(fuelCapacityIn.Text), Convert.ToInt32(fuelConsumptionIn.Text));
-                    CityTransport.Cars.Add(ID, car);
-                }
+                    if (CheckInput())
+                    {
+                        ID routeID = ((Route)routesList.SelectedItem).ID;
+                        string company = carCompanyIn.Text.Trim();
+                        int fuelCapacity = Convert.ToInt32(fuelCapacityIn.Text);
+                        int fuelConsumption = Convert.ToInt32(fuelConsumptionIn.Text);
 
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("Input data please!");
+                        if (Car == null)
+                        {
+                            ID carID = new ID(Convert.ToInt32(carIDIn.Text));
+                            switch (typesList.SelectedItem.ToString())
+                            {
+                                case "Circular":
+                                    Car = new CircularRouteTaxi(carID, company, CityTransport.Routes[routeID], fuelCapacity, fuelConsumption);
+                                    break;
+                                case "Direct":
+                                    Car = new DirectRouteTaxi(carID, company, CityTransport.Routes[routeID], fuelCapacity, fuelConsumption);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Car.Company = company;
+                            Car.FuelCapacity = fuelCapacity;
+                            Car.FuelConsumption = fuelConsumption;
+                            Car.Route = CityTransport.Routes[routeID];
+                        }
+
+                        changesSaved = true;
+                        saveChanges.Enabled = false;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message);
+                }
             }
         }
 
         private void cancelChanges_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void typesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadRoutes();
         }
     }
 }
