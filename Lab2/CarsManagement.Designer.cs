@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.cars = new System.Windows.Forms.GroupBox();
+            this.typesList = new System.Windows.Forms.ComboBox();
+            this.typeLbl = new System.Windows.Forms.Label();
             this.cancel = new System.Windows.Forms.Button();
             this.editCar = new System.Windows.Forms.Button();
             this.exit = new System.Windows.Forms.Button();
@@ -36,8 +38,6 @@
             this.carsList = new System.Windows.Forms.ComboBox();
             this.deleteCar = new System.Windows.Forms.Button();
             this.newCar = new System.Windows.Forms.Button();
-            this.typeLbl = new System.Windows.Forms.Label();
-            this.typesList = new System.Windows.Forms.ComboBox();
             this.cars.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,6 +58,23 @@
             this.cars.TabIndex = 2;
             this.cars.TabStop = false;
             this.cars.Text = "Cars";
+            // 
+            // typesList
+            // 
+            this.typesList.FormattingEnabled = true;
+            this.typesList.Location = new System.Drawing.Point(47, 74);
+            this.typesList.Name = "typesList";
+            this.typesList.Size = new System.Drawing.Size(115, 21);
+            this.typesList.TabIndex = 3;
+            // 
+            // typeLbl
+            // 
+            this.typeLbl.AutoSize = true;
+            this.typeLbl.Location = new System.Drawing.Point(6, 78);
+            this.typeLbl.Name = "typeLbl";
+            this.typeLbl.Size = new System.Drawing.Size(34, 13);
+            this.typeLbl.TabIndex = 3;
+            this.typeLbl.Text = "Type:";
             // 
             // cancel
             // 
@@ -127,30 +144,15 @@
             this.newCar.UseVisualStyleBackColor = true;
             this.newCar.Click += new System.EventHandler(this.newCar_Click);
             // 
-            // typeLbl
-            // 
-            this.typeLbl.AutoSize = true;
-            this.typeLbl.Location = new System.Drawing.Point(6, 78);
-            this.typeLbl.Name = "typeLbl";
-            this.typeLbl.Size = new System.Drawing.Size(34, 13);
-            this.typeLbl.TabIndex = 3;
-            this.typeLbl.Text = "Type:";
-            // 
-            // typesList
-            // 
-            this.typesList.FormattingEnabled = true;
-            this.typesList.Location = new System.Drawing.Point(47, 74);
-            this.typesList.Name = "typesList";
-            this.typesList.Size = new System.Drawing.Size(115, 21);
-            this.typesList.TabIndex = 3;
-            // 
             // CarsManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(193, 182);
             this.Controls.Add(this.cars);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "CarsManagement";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CarsManagement";
             this.cars.ResumeLayout(false);
             this.cars.PerformLayout();

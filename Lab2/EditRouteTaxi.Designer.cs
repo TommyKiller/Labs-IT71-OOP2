@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.editCarPanel = new System.Windows.Forms.GroupBox();
+            this.typesList = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.carIDIn = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.fuelConsumptionIn = new System.Windows.Forms.TextBox();
@@ -41,8 +43,6 @@
             this.routesList = new System.Windows.Forms.ComboBox();
             this.cancelChanges = new System.Windows.Forms.Button();
             this.saveChanges = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.typesList = new System.Windows.Forms.ComboBox();
             this.editCarPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,6 +69,24 @@
             this.editCarPanel.TabStop = false;
             this.editCarPanel.Text = "Edit";
             // 
+            // typesList
+            // 
+            this.typesList.FormattingEnabled = true;
+            this.typesList.Location = new System.Drawing.Point(74, 19);
+            this.typesList.Name = "typesList";
+            this.typesList.Size = new System.Drawing.Size(91, 21);
+            this.typesList.TabIndex = 25;
+            this.typesList.SelectedIndexChanged += new System.EventHandler(this.typesList_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.TabIndex = 24;
+            this.label4.Text = "Route type:";
+            // 
             // carIDIn
             // 
             this.carIDIn.Location = new System.Drawing.Point(66, 73);
@@ -93,6 +111,7 @@
             this.fuelConsumptionIn.Name = "fuelConsumptionIn";
             this.fuelConsumptionIn.Size = new System.Drawing.Size(60, 20);
             this.fuelConsumptionIn.TabIndex = 21;
+            this.fuelConsumptionIn.TextChanged += new System.EventHandler(this.fuelConsumptionIn_TextChanged);
             this.fuelConsumptionIn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.digitsIn_KeyPress);
             // 
             // label2
@@ -110,6 +129,7 @@
             this.fuelCapacityIn.Name = "fuelCapacityIn";
             this.fuelCapacityIn.Size = new System.Drawing.Size(60, 20);
             this.fuelCapacityIn.TabIndex = 19;
+            this.fuelCapacityIn.TextChanged += new System.EventHandler(this.fuelCapacityIn_TextChanged);
             this.fuelCapacityIn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.digitsIn_KeyPress);
             // 
             // label1
@@ -135,6 +155,7 @@
             this.carCompanyIn.Name = "carCompanyIn";
             this.carCompanyIn.Size = new System.Drawing.Size(99, 20);
             this.carCompanyIn.TabIndex = 16;
+            this.carCompanyIn.TextChanged += new System.EventHandler(this.carCompanyIn_TextChanged);
             this.carCompanyIn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.carCompanyIn_KeyPress);
             // 
             // companyLbl
@@ -175,31 +196,15 @@
             this.saveChanges.UseVisualStyleBackColor = true;
             this.saveChanges.Click += new System.EventHandler(this.saveChanges_Click);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 22);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 13);
-            this.label4.TabIndex = 24;
-            this.label4.Text = "Route type:";
-            // 
-            // typesList
-            // 
-            this.typesList.FormattingEnabled = true;
-            this.typesList.Location = new System.Drawing.Point(74, 19);
-            this.typesList.Name = "typesList";
-            this.typesList.Size = new System.Drawing.Size(91, 21);
-            this.typesList.TabIndex = 25;
-            this.typesList.SelectedIndexChanged += new System.EventHandler(this.typesList_SelectedIndexChanged);
-            // 
             // EditRouteTaxi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 204);
             this.Controls.Add(this.editCarPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "EditRouteTaxi";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.editCarPanel.ResumeLayout(false);
             this.editCarPanel.PerformLayout();
             this.ResumeLayout(false);

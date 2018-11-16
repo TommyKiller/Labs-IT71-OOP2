@@ -45,10 +45,16 @@ namespace Lab2
 
         private void newCar_Click(object sender, EventArgs e)
         {
+            List<ID> carsIDList = new List<ID>();
+            foreach (Transport car in carsList.Items.Cast<Transport>())
+            {
+                carsIDList.Add(car.ID);
+            }
+
             switch (typesList.Text)
             {
                 case "Route taxi":
-                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi("Register car");
+                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Register car");
                     editRouteTaxi.ShowDialog();
                     if (editRouteTaxi.Car != null)
                     {
@@ -64,9 +70,15 @@ namespace Lab2
         {
             if (carsList.SelectedItem != null)
             {
-                if (carsList.SelectedItem.GetType() == typeof(RouteTaxi))
+                if ((carsList.SelectedItem as RouteTaxi) != null)
                 {
-                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi("Edit car", (RouteTaxi)carsList.SelectedItem);
+                    List<ID> carsIDList = new List<ID>();
+                    foreach (Transport car in carsList.Items.Cast<Transport>())
+                    {
+                        carsIDList.Add(car.ID);
+                    }
+
+                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Edit car", (RouteTaxi)carsList.SelectedItem);
                     editRouteTaxi.ShowDialog();
                     if (editRouteTaxi.Car != null)
                     {
@@ -122,6 +134,7 @@ namespace Lab2
                     CityTransport.Cars.Remove(id);
                 }
 
+                EnableSave(false);
                 changesSaved = true;
             }
         }

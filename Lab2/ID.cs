@@ -8,35 +8,41 @@ namespace Lab2
 {
     public class ID : IEquatable<ID>
     {
-        public int _id_ { get; }
+        public int _id { get; }
 
         public ID(int id)
         {
-            _id_ = id;
-        }
-
-        public bool Equals(ID other)
-        {
-            if (other == null) return false;
-            return _id_.Equals(other._id_);
+            _id = id;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-            ID objAsID = obj as ID;
-            if (objAsID == null) return false;
-            else return Equals(objAsID);
+            return Equals(obj as ID);
+        }
+
+        public bool Equals(ID other)
+        {
+            return (!ReferenceEquals(other, null)) && (ReferenceEquals(other, this) || _id == other._id);
+        }
+
+        public static bool operator ==(ID left, ID right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ID left, ID right)
+        {
+            return !left.Equals(right);
         }
 
         public override string ToString()
         {
-            return _id_.ToString();
+            return _id.ToString();
         }
 
         public override int GetHashCode()
         {
-            return _id_;
+            return (_id != 0) ? _id.GetHashCode() : 0;
         }
     }
 }

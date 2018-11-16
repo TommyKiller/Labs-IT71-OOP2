@@ -13,6 +13,7 @@ namespace Lab2
     public partial class EditRouteTaxi : Form
     {
         private bool changesSaved = true;
+        private List<ID> CarsIDList { get; }
         private RouteTaxi car;
         public RouteTaxi Car
         {
@@ -26,10 +27,11 @@ namespace Lab2
             }
         }
 
-        public EditRouteTaxi(string caption, RouteTaxi car = null)
+        public EditRouteTaxi(List<ID> carsIDList, string caption, RouteTaxi car = null)
         {
             InitializeComponent();
 
+            CarsIDList = carsIDList;
             Text = caption;
             Car = car;
             routesList.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -42,9 +44,6 @@ namespace Lab2
 
         private void LoadRoutes()
         {
-            // Debug
-            MessageBox.Show("Routes loaded!");
-
             routesList.Items.Clear();
 
             switch (typesList.SelectedItem.ToString())
@@ -52,7 +51,7 @@ namespace Lab2
                 case "Circular":
                     foreach (ID id in CityTransport.Routes.Keys)
                     {
-                        if (CityTransport.Routes[id].Waypoints.First().Equals(CityTransport.Routes[id].Waypoints.Last()))
+                        if (CityTransport.Routes[id].Waypoints.First() == CityTransport.Routes[id].Waypoints.Last())
                         {
                             routesList.Items.Add(CityTransport.Routes[id]);
                         }
@@ -61,7 +60,7 @@ namespace Lab2
                 case "Direct":
                     foreach (ID id in CityTransport.Routes.Keys)
                     {
-                        if (!CityTransport.Routes[id].Waypoints.First().Equals(CityTransport.Routes[id].Waypoints.Last()))
+                        if (!(CityTransport.Routes[id].Waypoints.First() == CityTransport.Routes[id].Waypoints.Last()))
                         {
                             routesList.Items.Add(CityTransport.Routes[id]);
                         }
@@ -86,7 +85,8 @@ namespace Lab2
         {
             if (Car != null)
             {
-                switch (Car.GetType().ToString())
+                MessageBox.Show(Car.GetType().ToString().Split(new char[] { '.' }).Last());
+                switch (Car.GetType().ToString().Split(new char[] { '.' }).Last())
                 {
                     case "CircularRouteTaxi":
                         typesList.SelectedIndex = 0;
@@ -108,7 +108,7 @@ namespace Lab2
         {
             if (carIDIn.Text == string.Empty)
                 throw new Exception("Enter car's ID!");
-            if (CityTransport.Cars.Keys.Contains(new ID(Convert.ToInt32(carIDIn.Text))))
+            if (CarsIDList.Contains(new ID(Convert.ToInt32(carIDIn.Text))))
                 throw new Exception("Car with that ID already exists!");
             if (carCompanyIn.Text == string.Empty)
                 throw new Exception("Enter car's company name!");

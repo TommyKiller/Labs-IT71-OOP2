@@ -71,7 +71,9 @@
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.editRouteBtn);
             this.Controls.Add(this.editCarBtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainMenu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main Menu";
             this.ResumeLayout(false);
 

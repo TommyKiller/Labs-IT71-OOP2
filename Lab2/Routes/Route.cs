@@ -17,18 +17,24 @@ namespace Lab2
             Waypoints = new List<Waypoint>();
         }
 
-        public bool Equals(Route other)
-        {
-            if (other == null) return false;
-            return ID.Equals(other.ID);
-        }
-
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-            Route objAsRoute = obj as Route;
-            if (objAsRoute == null) return false;
-            else return Equals(objAsRoute);
+            return Equals(obj as Route);
+        }
+
+        public bool Equals(Route other)
+        {
+            return (!ReferenceEquals(other, null)) && (ReferenceEquals(other, this) || ID == other.ID);
+        }
+
+        public static bool operator ==(Route left, Route right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Route left, Route right)
+        {
+            return !left.Equals(right);
         }
 
         public override string ToString()
@@ -38,7 +44,7 @@ namespace Lab2
 
         public override int GetHashCode()
         {
-            return ID._id_;
+            return ID.GetHashCode();
         }
     }
 }

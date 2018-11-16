@@ -310,7 +310,9 @@
             this.ClientSize = new System.Drawing.Size(518, 174);
             this.Controls.Add(this.editRoutePanel);
             this.Controls.Add(this.routes);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "RoutesManagement";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Routes Management";
             this.routes.ResumeLayout(false);
             this.routes.PerformLayout();
