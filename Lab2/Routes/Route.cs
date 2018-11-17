@@ -29,12 +29,12 @@ namespace Lab2
 
         public static bool operator ==(Route left, Route right)
         {
-            return left.Equals(right);
+            return Equals(left, right);
         }
 
         public static bool operator !=(Route left, Route right)
         {
-            return !left.Equals(right);
+            return !Equals(left, right);
         }
 
         public override string ToString()

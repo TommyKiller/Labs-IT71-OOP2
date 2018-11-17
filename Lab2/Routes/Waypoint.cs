@@ -27,12 +27,12 @@ namespace Lab2
 
         public static bool operator ==(Waypoint left, Waypoint right)
         {
-            return left.Equals(right);
+            return Equals(left, right);
         }
 
         public static bool operator !=(Waypoint left, Waypoint right)
         {
-            return !left.Equals(right);
+            return !Equals(left, right);
         }
 
         public override int GetHashCode()

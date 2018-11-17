@@ -34,12 +34,14 @@ namespace Lab2
             CarsIDList = carsIDList;
             Text = caption;
             Car = car;
+
             routesList.DropDownStyle = ComboBoxStyle.DropDownList;
             typesList.DropDownStyle = ComboBoxStyle.DropDownList;
             typesList.Items.Add("Circular");
             typesList.Items.Add("Direct");
-            FillData();
             saveChanges.Enabled = false;
+
+            FillData();
         }
 
         private void LoadRoutes()
@@ -68,6 +70,7 @@ namespace Lab2
                     break;
             }
 
+            wpList.Items.Clear();
             routesList.SelectedIndex = routesList.Items.Count - 1;
         }
 
@@ -85,7 +88,6 @@ namespace Lab2
         {
             if (Car != null)
             {
-                MessageBox.Show(Car.GetType().ToString().Split(new char[] { '.' }).Last());
                 switch (Car.GetType().ToString().Split(new char[] { '.' }).Last())
                 {
                     case "CircularRouteTaxi":
@@ -108,9 +110,18 @@ namespace Lab2
         {
             if (carIDIn.Text == string.Empty)
                 throw new Exception("Enter car's ID!");
-            if (CarsIDList.Contains(new ID(Convert.ToInt32(carIDIn.Text))))
-                throw new Exception("Car with that ID already exists!");
-            if (carCompanyIn.Text == string.Empty)
+            ID carID = new ID(Convert.ToInt32(carIDIn.Text));
+            if (Car == null)
+            {
+                if (CarsIDList.Contains(carID))
+                    throw new Exception("Car with that ID already exists!");
+            }
+            else
+            {
+                if (CarsIDList.Contains(carID) && (Car.ID != carID))
+                    throw new Exception("Car with that ID already exists!");
+            }
+            if (carCompanyIn.Text.Trim() == string.Empty)
                 throw new Exception("Enter car's company name!");
             if (fuelCapacityIn.Text == string.Empty)
                 throw new Exception("Enter car's fuel capacity!");
@@ -129,7 +140,7 @@ namespace Lab2
 
         private void carCompanyIn_TextChanged(object sender, EventArgs e)
         {
-            if (!saveChanges.Enabled)
+            if (changesSaved)
             {
                 changesSaved = false;
                 saveChanges.Enabled = true;
@@ -155,11 +166,17 @@ namespace Lab2
         private void routesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadWaypoints();
+
+            if (changesSaved)
+            {
+                changesSaved = false;
+                saveChanges.Enabled = true;
+            }
         }
 
         private void fuelCapacityIn_TextChanged(object sender, EventArgs e)
         {
-            if (!saveChanges.Enabled)
+            if (changesSaved)
             {
                 changesSaved = false;
                 saveChanges.Enabled = true;
@@ -168,7 +185,7 @@ namespace Lab2
 
         private void fuelConsumptionIn_TextChanged(object sender, EventArgs e)
         {
-            if (!saveChanges.Enabled)
+            if (changesSaved)
             {
                 changesSaved = false;
                 saveChanges.Enabled = true;
@@ -177,7 +194,7 @@ namespace Lab2
 
         private void carIDIn_TextChanged(object sender, EventArgs e)
         {
-            if (!saveChanges.Enabled)
+            if (changesSaved)
             {
                 changesSaved = false;
                 saveChanges.Enabled = true;

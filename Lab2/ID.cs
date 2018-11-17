@@ -27,12 +27,12 @@ namespace Lab2
 
         public static bool operator ==(ID left, ID right)
         {
-            return left.Equals(right);
+            return Equals(left, right);
         }
 
         public static bool operator !=(ID left, ID right)
         {
-            return !left.Equals(right);
+            return !Equals(left, right);
         }
 
         public override string ToString()

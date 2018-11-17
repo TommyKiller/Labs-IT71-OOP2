@@ -269,9 +269,10 @@ namespace Lab2
 
         private void addNewWp_Click(object sender, EventArgs e)
         {
-            if (newWpAdressIn.Text != string.Empty)
+            string adress = newWpAdressIn.Text.Trim();
+            if (adress != string.Empty)
             {
-                wpList.Items.Add(new Waypoint(newWpAdressIn.Text.Trim()));
+                wpList.Items.Add(new Waypoint(adress));
                 newWpAdressIn.Text = string.Empty;
                 EnableSaveRoute(true);
             }
