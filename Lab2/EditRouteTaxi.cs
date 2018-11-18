@@ -35,13 +35,14 @@ namespace Lab2
             Text = caption;
             Car = car;
 
-            routesList.DropDownStyle = ComboBoxStyle.DropDownList;
-            typesList.DropDownStyle = ComboBoxStyle.DropDownList;
+            SetTypes();
+            FillData();
+        }
+
+        private void SetTypes()
+        {
             typesList.Items.Add("Circular");
             typesList.Items.Add("Direct");
-            saveChanges.Enabled = false;
-
-            FillData();
         }
 
         private void LoadRoutes()

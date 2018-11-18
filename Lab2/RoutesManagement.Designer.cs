@@ -133,6 +133,7 @@
             // 
             // routesList
             // 
+            this.routesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.routesList.FormattingEnabled = true;
             this.routesList.Location = new System.Drawing.Point(6, 19);
             this.routesList.Name = "routesList";

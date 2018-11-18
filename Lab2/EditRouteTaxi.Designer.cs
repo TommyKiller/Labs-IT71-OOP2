@@ -71,6 +71,7 @@
             // 
             // typesList
             // 
+            this.typesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.typesList.FormattingEnabled = true;
             this.typesList.Location = new System.Drawing.Point(74, 19);
             this.typesList.Name = "typesList";
@@ -169,6 +170,7 @@
             // 
             // routesList
             // 
+            this.routesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.routesList.FormattingEnabled = true;
             this.routesList.Location = new System.Drawing.Point(9, 46);
             this.routesList.Name = "routesList";
@@ -188,6 +190,7 @@
             // 
             // saveChanges
             // 
+            this.saveChanges.Enabled = false;
             this.saveChanges.Location = new System.Drawing.Point(171, 159);
             this.saveChanges.Name = "saveChanges";
             this.saveChanges.Size = new System.Drawing.Size(57, 20);

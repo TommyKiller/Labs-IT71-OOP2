@@ -61,6 +61,7 @@
             // 
             // typesList
             // 
+            this.typesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.typesList.FormattingEnabled = true;
             this.typesList.Location = new System.Drawing.Point(47, 74);
             this.typesList.Name = "typesList";
@@ -118,6 +119,7 @@
             // 
             // carsList
             // 
+            this.carsList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.carsList.FormattingEnabled = true;
             this.carsList.Location = new System.Drawing.Point(6, 19);
             this.carsList.Name = "carsList";

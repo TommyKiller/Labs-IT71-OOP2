@@ -18,11 +18,11 @@ namespace Lab2
         {
             InitializeComponent();
 
-            routesList.DropDownStyle = ComboBoxStyle.DropDownList;
             EnableRouteEditLayout(false);
             EnableRouteSelectionLayout(true);
             EnableSaveRoute(false);
             EnableSave(false);
+
             LoadRoutes();
         }
 
@@ -53,6 +53,7 @@ namespace Lab2
             wpList.Items.Clear();
             wpList.SelectedIndex = -1;
             selectedWpAdressIn.Text = string.Empty;
+            newWpAdressIn.Text = string.Empty;
         }
 
         // Buttnos enabling //
@@ -151,9 +152,8 @@ namespace Lab2
         {
             if (routesList.SelectedItem != null)
             {
-                int index = routesList.SelectedIndex;
                 routesList.Items.Remove(routesList.SelectedItem);
-                routesList.SelectedIndex = index - 1;
+                routesList.SelectedIndex = routesList.Items.Count - 1;
                 changesSaved = false;
                 EnableSave(true);
             }
@@ -167,16 +167,7 @@ namespace Lab2
 
                 foreach (Route route in routesList.Items.Cast<Route>())
                 {
-                    if (CityTransport.Routes.Contains(new KeyValuePair<ID, Route>(route.ID, route)))
-                    {
-                        CityTransport.Routes[route.ID].Waypoints.Clear();
-
-                        foreach (Waypoint wp in route.Waypoints)
-                        {
-                            CityTransport.Routes[route.ID].Waypoints.Add(wp);
-                        }
-                    }
-                    else
+                    if (!CityTransport.Routes.Contains(new KeyValuePair<ID, Route>(route.ID, route)))
                     {
                         CityTransport.Routes.Add(route.ID, route);
                     }
@@ -193,15 +184,37 @@ namespace Lab2
 
                 foreach (ID routeID in IDList)
                 {
-                    foreach (ID carID in CityTransport.Cars.Keys)
+                    CityTransport.Routes.Remove(routeID);
+                }
+                
+                foreach (KeyValuePair<ID, Transport> item in CityTransport.Cars)
+                {
+                    if (item.Value.Route != null)
                     {
-                        if (CityTransport.Cars[carID].Route == CityTransport.Routes[routeID])
+                        if (!CityTransport.Routes.Keys.Contains(item.Value.Route.ID))
                         {
-                            CityTransport.Cars[carID].Route = null;
+                            item.Value.Route = null;
+                        }
+                        else
+                        {
+                            if ((item.Value as CircularRouteTaxi) != null)
+                            {
+                                if (CityTransport.Routes[item.Value.Route.ID].Waypoints.First() !=
+                                    CityTransport.Routes[item.Value.Route.ID].Waypoints.Last())
+                                {
+                                    item.Value.Route = null;
+                                }
+                            }
+                            else if ((item.Value as DirectRouteTaxi) != null)
+                            {
+                                if (CityTransport.Routes[item.Value.Route.ID].Waypoints.First() ==
+                                    CityTransport.Routes[item.Value.Route.ID].Waypoints.Last())
+                                {
+                                    item.Value.Route = null;
+                                }
+                            }
                         }
                     }
-
-                    CityTransport.Routes.Remove(routeID);
                 }
 
                 changesSaved = true;
@@ -339,7 +352,6 @@ namespace Lab2
             if (wpList.Items.Count > 1)
             {
                 ClearWaypoints();
-                newWpAdressIn.Text = string.Empty;
                 EnableRouteSelectionLayout(true);
                 EnableRouteEditLayout(false);
                 if (!changesSaved)

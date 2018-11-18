@@ -18,11 +18,14 @@ namespace Lab2
         {
             InitializeComponent();
 
-            carsList.DropDownStyle = ComboBoxStyle.DropDownList;
-            typesList.DropDownStyle = ComboBoxStyle.DropDownList;
-            typesList.Items.Add("Route taxi");
+            SetTypes();
             EnableSave(false);
             LoadCars();
+        }
+
+        private void SetTypes()
+        {
+            typesList.Items.Add("Route taxi");
         }
 
         private void LoadCars()
@@ -61,6 +64,7 @@ namespace Lab2
                         carsList.Items.Add(editRouteTaxi.Car);
                         changesSaved = false;
                         EnableSave(true);
+                        //LoadCars();
                     }
                     break;
             }
@@ -88,6 +92,7 @@ namespace Lab2
                         ((RouteTaxi)carsList.SelectedItem).Route = editRouteTaxi.Car.Route;
                         changesSaved = false;
                         EnableSave(true);
+                        //LoadCars();
                     }
                 }
             }
@@ -110,11 +115,7 @@ namespace Lab2
             {
                 foreach (Transport car in carsList.Items.Cast<Transport>())
                 {
-                    if (CityTransport.Cars.Contains(new KeyValuePair<ID, Transport>(car.ID, car)))
-                    {
-                        CityTransport.Cars[car.ID] = car;
-                    }
-                    else
+                    if (!CityTransport.Cars.Contains(new KeyValuePair<ID, Transport>(car.ID, car)))
                     {
                         CityTransport.Cars.Add(car.ID, car);
                     }
