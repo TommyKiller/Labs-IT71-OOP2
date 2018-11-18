@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    class DirectRouteTaxi : RouteTaxi
+    public class DirectRouteTaxi : RouteTaxi
     {
         private int _currentwpindex;
         private int _direction;

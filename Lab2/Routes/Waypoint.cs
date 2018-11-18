@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    class Waypoint : IEquatable<Waypoint>
+    public class Waypoint : IEquatable<Waypoint>
     {
         public string Adress { get; set; }
 
@@ -15,28 +15,34 @@ namespace Lab2
             Adress = adress;
         }
 
-        public override string ToString()
-        {
-            return Adress;
-        }
-
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-            Waypoint objAsWaypoint = obj as Waypoint;
-            if (objAsWaypoint == null) return false;
-            else return Equals(objAsWaypoint);
+            return Equals(obj as Waypoint);
         }
 
         public bool Equals(Waypoint other)
         {
-            if (other == null) return false;
-            return (Adress == other.Adress) ? true : false;
+            return (!ReferenceEquals(other, null)) && (ReferenceEquals(other, this) || Adress == other.Adress);
+        }
+
+        public static bool operator ==(Waypoint left, Waypoint right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Waypoint left, Waypoint right)
+        {
+            return !Equals(left, right);
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return (Adress == string.Empty) ? Adress.GetHashCode() : 0;
+        }
+
+        public override string ToString()
+        {
+            return Adress;
         }
     }
 }

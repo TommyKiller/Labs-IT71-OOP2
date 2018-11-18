@@ -133,6 +133,7 @@
             // 
             // routesList
             // 
+            this.routesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.routesList.FormattingEnabled = true;
             this.routesList.Location = new System.Drawing.Point(6, 19);
             this.routesList.Name = "routesList";
@@ -310,7 +311,9 @@
             this.ClientSize = new System.Drawing.Size(518, 174);
             this.Controls.Add(this.editRoutePanel);
             this.Controls.Add(this.routes);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "RoutesManagement";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Routes Management";
             this.routes.ResumeLayout(false);
             this.routes.PerformLayout();
