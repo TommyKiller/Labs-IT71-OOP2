@@ -13,10 +13,17 @@ namespace Lab2
     public partial class RoutesManagement : Form
     {
         private bool changesSaved = true;
+        private BindingList<Route> Routes = new BindingList<Route>();
+        private BindingList<Waypoint> Waypoints = new BindingList<Waypoint>();
 
         public RoutesManagement()
         {
             InitializeComponent();
+            // 
+            // Data binding 
+            // 
+            wpList.DataSource = Waypoints;
+            routesList.DataSource = Routes;
 
             EnableRouteEditLayout(false);
             EnableRouteSelectionLayout(true);
@@ -28,30 +35,29 @@ namespace Lab2
 
         private void LoadRoutes()
         {
-            routesList.Items.Clear();
+            Routes.Clear();
 
             foreach (ID id in CityTransport.Routes.Keys)
             {
-                routesList.Items.Add(CityTransport.Routes[id]);
+                Routes.Add(new Route(CityTransport.Routes[id]));
             }
 
-            routesList.SelectedIndex = routesList.Items.Count - 1;
+            routesList_SelectedIndexChanged(this, new EventArgs());
         }
 
         private void LoadWaypoints()
         {
             ClearWaypoints();
 
-            foreach (Waypoint wp in ((Route)routesList.SelectedItem).Waypoints)
+            foreach (Waypoint wp in Routes[routesList.SelectedIndex].Waypoints)
             {
-                wpList.Items.Add(wp);
+                Waypoints.Add(wp);
             }
         }
 
         private void ClearWaypoints()
         {
-            wpList.Items.Clear();
-            wpList.SelectedIndex = -1;
+            Waypoints.Clear();
             selectedWpAdressIn.Text = string.Empty;
             newWpAdressIn.Text = string.Empty;
         }
@@ -96,7 +102,7 @@ namespace Lab2
 
         private void editRoute_Click(object sender, EventArgs e)
         {
-            if (routesList.SelectedItem != null)
+            if (routesList.SelectedIndex > -1)
             {
                 EnableRouteSelectionLayout(false);
                 EnableRouteEditLayout(true);
@@ -110,10 +116,12 @@ namespace Lab2
             if (routesList.SelectedIndex > -1)
             {
                 editRoute.Enabled = true;
+                deleteRoute.Enabled = true;
             }
             else
             {
                 editRoute.Enabled = false;
+                deleteRoute.Enabled = false;
             }
         }
 
@@ -123,9 +131,9 @@ namespace Lab2
             {
                 ID routeID = new ID(Convert.ToInt32(routeIdIn.Text));
                 Route newRoute = new Route(routeID);
-                if (!routesList.Items.Contains(newRoute))
+                if (!Routes.Contains(newRoute))
                 {
-                    routesList.Items.Add(newRoute);
+                    Routes.Add(newRoute);
                     routeIdIn.Text = string.Empty;
                     routesList.SelectedIndex = routesList.Items.Count - 1;
                     changesSaved = false;
@@ -150,9 +158,9 @@ namespace Lab2
 
         private void deleteRoute_Click(object sender, EventArgs e)
         {
-            if (routesList.SelectedItem != null)
+            if (routesList.SelectedIndex > -1)
             {
-                routesList.Items.Remove(routesList.SelectedItem);
+                Routes.Remove(Routes[routesList.SelectedIndex]);
                 routesList.SelectedIndex = routesList.Items.Count - 1;
                 changesSaved = false;
                 EnableSave(true);
@@ -165,18 +173,26 @@ namespace Lab2
             {
                 EnableSave(false);
 
-                foreach (Route route in routesList.Items.Cast<Route>())
+                // Adding new and edtiting existing //
+
+                foreach (Route route in Routes)
                 {
-                    if (!CityTransport.Routes.Contains(new KeyValuePair<ID, Route>(route.ID, route)))
+                    if (!CityTransport.Routes.Keys.Contains(route.ID))
                     {
                         CityTransport.Routes.Add(route.ID, route);
                     }
+                    else
+                    {
+                        CityTransport.Routes[route.ID] = route;
+                    }
                 }
+
+                // Delete extra routes //
 
                 List<ID> IDList = new List<ID>();
                 foreach (ID id in CityTransport.Routes.Keys)
                 {
-                    if (!routesList.Items.Contains(CityTransport.Routes[id]))
+                    if (!Routes.Contains(CityTransport.Routes[id]))
                     {
                         IDList.Add(id);
                     }
@@ -187,6 +203,8 @@ namespace Lab2
                     CityTransport.Routes.Remove(routeID);
                 }
                 
+                // Clear assignments to cars //
+
                 foreach (KeyValuePair<ID, Transport> item in CityTransport.Cars)
                 {
                     if (item.Value.Route != null)
@@ -252,7 +270,7 @@ namespace Lab2
         {
             if (wpList.SelectedIndex > -1)
             {
-                selectedWpAdressIn.Text = ((Waypoint)wpList.SelectedItem).Adress;
+                selectedWpAdressIn.Text = Waypoints[wpList.SelectedIndex].Adress;
             }
             else
             {
@@ -262,20 +280,22 @@ namespace Lab2
 
         private void editSelectedWpAdress_Click(object sender, EventArgs e)
         {
-            if (selectedWpAdressIn.Text != string.Empty && wpList.SelectedItem != null)
+            if (selectedWpAdressIn.Text != string.Empty && wpList.SelectedIndex > -1)
             {
-                wpList.Items.Insert(wpList.SelectedIndex, new Waypoint(selectedWpAdressIn.Text.Trim()));
-                wpList.Items.Remove(wpList.SelectedItem);
+                int index = wpList.SelectedIndex;
+                Waypoints.Insert(wpList.SelectedIndex, new Waypoint(selectedWpAdressIn.Text.Trim()));
+                Waypoints.Remove(Waypoints[wpList.SelectedIndex]);
                 selectedWpAdressIn.Text = string.Empty;
+                wpList.SelectedIndex = index;
                 EnableSaveRoute(true);
             }
         }
 
         private void deleteSelectedWp_Click(object sender, EventArgs e)
         {
-            if (wpList.SelectedItem != null)
+            if (wpList.SelectedIndex > -1)
             {
-                wpList.Items.Remove(wpList.SelectedItem);
+                Waypoints.Remove(Waypoints[wpList.SelectedIndex]);
                 EnableSaveRoute(true);
             }
         }
@@ -285,7 +305,7 @@ namespace Lab2
             string adress = newWpAdressIn.Text.Trim();
             if (adress != string.Empty)
             {
-                wpList.Items.Add(new Waypoint(adress));
+                Waypoints.Add(new Waypoint(adress));
                 newWpAdressIn.Text = string.Empty;
                 EnableSaveRoute(true);
             }
@@ -296,8 +316,8 @@ namespace Lab2
             if (wpList.SelectedIndex > 0)
             {
                 int index = wpList.SelectedIndex;
-                wpList.Items.Insert(wpList.SelectedIndex - 1, wpList.SelectedItem);
-                wpList.Items.RemoveAt(wpList.SelectedIndex);
+                Waypoints.Insert(wpList.SelectedIndex - 1, Waypoints[wpList.SelectedIndex]);
+                Waypoints.RemoveAt(wpList.SelectedIndex);
                 wpList.SelectedIndex = index - 1;
                 EnableSaveRoute(true);
             }
@@ -308,8 +328,8 @@ namespace Lab2
             if (wpList.Items.Count > 1 && wpList.SelectedIndex < wpList.Items.Count - 1)
             {
                 int index = wpList.SelectedIndex;
-                wpList.Items.Insert(wpList.SelectedIndex + 2, wpList.SelectedItem);
-                wpList.Items.RemoveAt(wpList.SelectedIndex);
+                Waypoints.Insert(wpList.SelectedIndex + 2, Waypoints[wpList.SelectedIndex]);
+                Waypoints.RemoveAt(wpList.SelectedIndex);
                 wpList.SelectedIndex = index + 1;
                 EnableSaveRoute(true);
             }
@@ -318,11 +338,11 @@ namespace Lab2
         private void saveRoute_Click(object sender, EventArgs e)
         {
             EnableSaveRoute(false);
-            ((Route)routesList.SelectedItem).Waypoints.Clear();
+            Routes[routesList.SelectedIndex].Waypoints.Clear();
 
-            foreach (Waypoint wp in wpList.Items.Cast<Waypoint>())
+            foreach (Waypoint wp in Waypoints)
             {
-                ((Route)routesList.SelectedItem).Waypoints.Add(wp);
+                Routes[routesList.SelectedIndex].Waypoints.Add(wp);
             }
 
             changesSaved = false;

@@ -19,6 +19,11 @@ namespace Lab2
             _direction = 1;
         }
 
+        public DirectRouteTaxi(DirectRouteTaxi car)
+            : base(car)
+        {
+        }
+
         public override void Move()
         {
             try

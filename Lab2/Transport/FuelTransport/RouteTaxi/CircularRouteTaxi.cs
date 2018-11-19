@@ -17,6 +17,11 @@ namespace Lab2
             _currentwpindex_ = -1;
         }
 
+        public CircularRouteTaxi(CircularRouteTaxi car)
+            : base(car)
+        {
+        }
+
         public override void Move()
         {
             try

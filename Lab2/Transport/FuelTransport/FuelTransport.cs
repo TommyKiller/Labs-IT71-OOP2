@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Lab2
 {
-    public abstract class FuelPoweredTransport : Transport
+    public abstract class FuelTransport : Transport
     {
         private int _fuel_amount;
         public int FuelCapacity { get; set; }
@@ -35,12 +35,20 @@ namespace Lab2
             }
         }
 
-        public FuelPoweredTransport(ID id, string owner_company, int max_fuel_amount, int fuel_consumption)
+        public FuelTransport(ID id, string owner_company, int max_fuel_amount, int fuel_consumption)
             : base(id, owner_company)
         {
             FuelCapacity = max_fuel_amount;
             FuelConsumption = fuel_consumption;
             Fuel = max_fuel_amount;
+        }
+
+        public FuelTransport(FuelTransport car)
+            : base(car)
+        {
+            FuelCapacity = car.FuelCapacity;
+            FuelConsumption = car.FuelConsumption;
+            Fuel = car.Fuel;
         }
 
         public override void Move()

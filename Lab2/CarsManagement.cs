@@ -13,10 +13,15 @@ namespace Lab2
     public partial class CarsManagement : Form
     {
         private bool changesSaved = true;
+        private BindingList<Transport> Cars = new BindingList<Transport>();
 
         public CarsManagement()
         {
             InitializeComponent();
+            // 
+            // Data bindings 
+            // 
+            carsList.DataSource = Cars;
 
             SetTypes();
             EnableSave(false);
@@ -30,14 +35,24 @@ namespace Lab2
 
         private void LoadCars()
         {
-            carsList.Items.Clear();
+            Cars.Clear();
 
             foreach(ID id in CityTransport.Cars.Keys)
             {
-                carsList.Items.Add(CityTransport.Cars[id]);
+                Transport car;
+                if ((CityTransport.Cars[id] as CircularRouteTaxi) != null)
+                {
+                    car = new CircularRouteTaxi((CircularRouteTaxi)CityTransport.Cars[id]);
+                    Cars.Add(car);
+                }
+                else if ((CityTransport.Cars[id] as DirectRouteTaxi) != null)
+                {
+                    car = new DirectRouteTaxi((DirectRouteTaxi)CityTransport.Cars[id]);
+                    Cars.Add(car);
+                }
             }
 
-            carsList.SelectedIndex = carsList.Items.Count - 1;
+            carsList_SelectedIndexChanged(this, new EventArgs());
         }
 
         private void EnableSave(bool mode)
@@ -49,7 +64,7 @@ namespace Lab2
         private void newCar_Click(object sender, EventArgs e)
         {
             List<ID> carsIDList = new List<ID>();
-            foreach (Transport car in carsList.Items.Cast<Transport>())
+            foreach (Transport car in Cars)
             {
                 carsIDList.Add(car.ID);
             }
@@ -61,10 +76,10 @@ namespace Lab2
                     editRouteTaxi.ShowDialog();
                     if (editRouteTaxi.Car != null)
                     {
-                        carsList.Items.Add(editRouteTaxi.Car);
+                        Cars.Add(editRouteTaxi.Car);
+                        carsList.SelectedIndex = Cars.Count - 1;
                         changesSaved = false;
                         EnableSave(true);
-                        //LoadCars();
                     }
                     break;
             }
@@ -72,27 +87,28 @@ namespace Lab2
 
         private void editCar_Click(object sender, EventArgs e)
         {
-            if (carsList.SelectedItem != null)
+            if (carsList.SelectedIndex > -1)
             {
-                if ((carsList.SelectedItem as RouteTaxi) != null)
+                int index = carsList.SelectedIndex;
+                if ((Cars[index] as RouteTaxi) != null)
                 {
                     List<ID> carsIDList = new List<ID>();
-                    foreach (Transport car in carsList.Items.Cast<Transport>())
+                    foreach (Transport car in Cars)
                     {
                         carsIDList.Add(car.ID);
                     }
 
-                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Edit car", (RouteTaxi)carsList.SelectedItem);
+                    EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Edit car", (RouteTaxi)Cars[index]);
                     editRouteTaxi.ShowDialog();
                     if (editRouteTaxi.Car != null)
                     {
-                        ((RouteTaxi)carsList.SelectedItem).Company = editRouteTaxi.Car.Company;
-                        ((RouteTaxi)carsList.SelectedItem).FuelCapacity = editRouteTaxi.Car.FuelCapacity;
-                        ((RouteTaxi)carsList.SelectedItem).FuelConsumption = editRouteTaxi.Car.FuelConsumption;
-                        ((RouteTaxi)carsList.SelectedItem).Route = editRouteTaxi.Car.Route;
+                        ((RouteTaxi)Cars[index]).Company = editRouteTaxi.Car.Company;
+                        ((RouteTaxi)Cars[index]).FuelCapacity = editRouteTaxi.Car.FuelCapacity;
+                        ((RouteTaxi)Cars[index]).FuelConsumption = editRouteTaxi.Car.FuelConsumption;
+                        ((RouteTaxi)Cars[index]).Route = editRouteTaxi.Car.Route;
+                        carsList.SelectedIndex = Cars.Count - 1;
                         changesSaved = false;
                         EnableSave(true);
-                        //LoadCars();
                     }
                 }
             }
@@ -100,10 +116,9 @@ namespace Lab2
 
         private void deleteCar_Click(object sender, EventArgs e)
         {
-            if (carsList.SelectedItem != null)
+            if (carsList.SelectedIndex > -1)
             {
-                carsList.Items.Remove(carsList.SelectedItem);
-                carsList.SelectedIndex = carsList.Items.Count - 1;
+                Cars.Remove(Cars[carsList.SelectedIndex]);
                 changesSaved = false;
                 EnableSave(true);
             }
@@ -113,18 +128,26 @@ namespace Lab2
         {
             if (!changesSaved)
             {
-                foreach (Transport car in carsList.Items.Cast<Transport>())
+                // Adding new and edtiting existing //
+
+                foreach (Transport car in Cars)
                 {
-                    if (!CityTransport.Cars.Contains(new KeyValuePair<ID, Transport>(car.ID, car)))
+                    if (!CityTransport.Cars.Keys.Contains(car.ID))
                     {
                         CityTransport.Cars.Add(car.ID, car);
                     }
+                    else
+                    {
+                        CityTransport.Cars[car.ID] = car;
+                    }
                 }
+                
+                // Delete extra cars //
 
                 List<ID> IDList = new List<ID>();
                 foreach (ID id in CityTransport.Cars.Keys)
                 {
-                    if (!carsList.Items.Contains(CityTransport.Cars[id]))
+                    if (!Cars.Contains(CityTransport.Cars[id]))
                     {
                         IDList.Add(id);
                     }
@@ -155,6 +178,20 @@ namespace Lab2
             CityTransport.Context.MainForm = new MainMenu();
             Close();
             CityTransport.Context.MainForm.Show();
+        }
+
+        private void carsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (carsList.SelectedIndex > -1)
+            {
+                editCar.Enabled = true;
+                deleteCar.Enabled = true;
+            }
+            else
+            {
+                editCar.Enabled = false;
+                deleteCar.Enabled = false;
+            }
         }
     }
 }

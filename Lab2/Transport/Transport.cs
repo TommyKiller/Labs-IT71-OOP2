@@ -3,12 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Lab2
 {
-    public abstract class Transport
+    public abstract class Transport : INotifyPropertyChanged
     {
-        public Route Route { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        private Route route;
+        public Route Route
+        {
+            get
+            {
+                return route;
+            }
+            set
+            {
+                route = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Route"));
+            }
+        }
         public ID ID { get; }
         public string Company { get; set; }
 
@@ -16,6 +30,13 @@ namespace Lab2
         {
             ID = id;
             Company = owner_company;
+        }
+
+        public Transport(Transport car)
+        {
+            ID = car.ID;
+            Company = car.Company;
+            Route = car.Route;
         }
 
         public abstract void FillUp(int value);

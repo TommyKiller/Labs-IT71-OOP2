@@ -125,6 +125,7 @@
             this.carsList.Name = "carsList";
             this.carsList.Size = new System.Drawing.Size(156, 21);
             this.carsList.TabIndex = 2;
+            this.carsList.SelectedIndexChanged += new System.EventHandler(this.carsList_SelectedIndexChanged);
             // 
             // deleteCar
             // 

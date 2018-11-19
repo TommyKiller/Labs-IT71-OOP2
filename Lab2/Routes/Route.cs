@@ -17,6 +17,17 @@ namespace Lab2
             Waypoints = new List<Waypoint>();
         }
 
+        public Route (Route route)
+        {
+            ID = route.ID;
+            Waypoints = new List<Waypoint>();
+
+            foreach(Waypoint wp in route.Waypoints)
+            {
+                Waypoints.Add(wp);
+            }
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Route);
