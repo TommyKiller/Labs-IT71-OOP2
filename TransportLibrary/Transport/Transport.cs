@@ -17,6 +17,8 @@ namespace TransportLibrary
             Company = owner_company;
         }
 
+        public abstract void Move();
+
         public abstract object Clone();
 
         public override string ToString()

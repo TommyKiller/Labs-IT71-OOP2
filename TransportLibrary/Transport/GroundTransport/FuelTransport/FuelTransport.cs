@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransportLibrary
 {
-    public abstract class FuelTransport : Transport
+    public abstract class FuelTransport : GroundTransport
     {
         private int _fuel_amount;
         public int FuelCapacity { get; private set; }

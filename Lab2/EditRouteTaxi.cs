@@ -169,12 +169,15 @@ namespace Lab2
 
         private void routesList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadWaypoints();
-
-            if (changesSaved)
+            if (routesList.SelectedIndex > -1)
             {
-                changesSaved = false;
-                saveChanges.Enabled = true;
+                LoadWaypoints();
+
+                if (changesSaved)
+                {
+                    changesSaved = false;
+                    saveChanges.Enabled = true;
+                }
             }
         }
 

@@ -47,8 +47,9 @@
     <Compile Include="Routes\RouteTypes.cs" />
     <Compile Include="Routes\Waypoint.cs" />
     <Compile Include="ID\CarID.cs" />
-    <Compile Include="Transport\FuelTransport\FuelTransport.cs" />
-    <Compile Include="Transport\FuelTransport\RouteTaxi\RouteTaxi.cs" />
+    <Compile Include="Transport\GroundTransport\FuelTransport\FuelTransport.cs" />
+    <Compile Include="Transport\GroundTransport\FuelTransport\RouteTaxi\RouteTaxi.cs" />
+    <Compile Include="Transport\GroundTransport\GroundTransport.cs" />
     <Compile Include="Transport\Transport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
