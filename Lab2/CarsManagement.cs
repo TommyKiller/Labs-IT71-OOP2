@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TransportLibrary;
 
 namespace Lab2
 {
@@ -37,19 +38,9 @@ namespace Lab2
         {
             Cars.Clear();
 
-            foreach(ID id in CityTransport.Cars.Keys)
+            foreach(CarID carID in CityTransport.Cars.Keys)
             {
-                Transport car;
-                if ((CityTransport.Cars[id] as CircularRouteTaxi) != null)
-                {
-                    car = new CircularRouteTaxi((CircularRouteTaxi)CityTransport.Cars[id]);
-                    Cars.Add(car);
-                }
-                else if ((CityTransport.Cars[id] as DirectRouteTaxi) != null)
-                {
-                    car = new DirectRouteTaxi((DirectRouteTaxi)CityTransport.Cars[id]);
-                    Cars.Add(car);
-                }
+                Cars.Add(CityTransport.Cars[carID].Clone() as Transport);
             }
 
             carsList_SelectedIndexChanged(this, new EventArgs());
@@ -63,7 +54,7 @@ namespace Lab2
 
         private void newCar_Click(object sender, EventArgs e)
         {
-            List<ID> carsIDList = new List<ID>();
+            List<CarID> carsIDList = new List<CarID>();
             foreach (Transport car in Cars)
             {
                 carsIDList.Add(car.ID);
@@ -78,6 +69,7 @@ namespace Lab2
                     {
                         Cars.Add(editRouteTaxi.Car);
                         carsList.SelectedIndex = Cars.Count - 1;
+                        carsList_SelectedIndexChanged(this, new EventArgs());
                         changesSaved = false;
                         EnableSave(true);
                     }
@@ -90,23 +82,21 @@ namespace Lab2
             if (carsList.SelectedIndex > -1)
             {
                 int index = carsList.SelectedIndex;
+                List<CarID> carsIDList = new List<CarID>();
+                foreach (Transport car in Cars)
+                {
+                    carsIDList.Add(car.ID);
+                }
+
                 if ((Cars[index] as RouteTaxi) != null)
                 {
-                    List<ID> carsIDList = new List<ID>();
-                    foreach (Transport car in Cars)
-                    {
-                        carsIDList.Add(car.ID);
-                    }
-
                     EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Edit car", (RouteTaxi)Cars[index]);
                     editRouteTaxi.ShowDialog();
                     if (editRouteTaxi.Car != null)
                     {
-                        ((RouteTaxi)Cars[index]).Company = editRouteTaxi.Car.Company;
-                        ((RouteTaxi)Cars[index]).FuelCapacity = editRouteTaxi.Car.FuelCapacity;
-                        ((RouteTaxi)Cars[index]).FuelConsumption = editRouteTaxi.Car.FuelConsumption;
-                        ((RouteTaxi)Cars[index]).Route = editRouteTaxi.Car.Route;
+                        Cars[index] = editRouteTaxi.Car.Clone() as RouteTaxi;
                         carsList.SelectedIndex = Cars.Count - 1;
+                        carsList_SelectedIndexChanged(this, new EventArgs());
                         changesSaved = false;
                         EnableSave(true);
                     }
@@ -144,18 +134,18 @@ namespace Lab2
                 
                 // Delete extra cars //
 
-                List<ID> IDList = new List<ID>();
-                foreach (ID id in CityTransport.Cars.Keys)
+                List<CarID> IDList = new List<CarID>();
+                foreach (CarID carID in CityTransport.Cars.Keys)
                 {
-                    if (!Cars.Contains(CityTransport.Cars[id]))
+                    if (!Cars.Contains(CityTransport.Cars[carID]))
                     {
-                        IDList.Add(id);
+                        IDList.Add(carID);
                     }
                 }
 
-                foreach (ID id in IDList)
+                foreach (CarID carID in IDList)
                 {
-                    CityTransport.Cars.Remove(id);
+                    CityTransport.Cars.Remove(carID);
                 }
 
                 EnableSave(false);

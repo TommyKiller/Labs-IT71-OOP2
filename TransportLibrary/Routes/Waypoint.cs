@@ -4,15 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab2
+namespace TransportLibrary
 {
-    public class Waypoint : IEquatable<Waypoint>
+    public class Waypoint : IEquatable<Waypoint>, ICloneable
     {
         public string Adress { get; set; }
 
         public Waypoint(string adress)
         {
             Adress = adress;
+        }
+
+        public object Clone()
+        {
+            Waypoint wp = this.MemberwiseClone() as Waypoint;
+            wp.Adress = String.Copy(this.Adress);
+            return wp;
         }
 
         public override bool Equals(object obj)

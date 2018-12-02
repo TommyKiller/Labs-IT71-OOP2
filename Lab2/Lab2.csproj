@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Lab2</RootNamespace>
     <AssemblyName>Lab2</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,7 +53,6 @@
     <Compile Include="CarsManagement.Designer.cs">
       <DependentUpon>CarsManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="ID.cs" />
     <Compile Include="EditRouteTaxi.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,21 +65,14 @@
     <Compile Include="RoutesManagement.Designer.cs">
       <DependentUpon>RoutesManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="Transport\FuelTransport\RouteTaxi\CircularRouteTaxi.cs" />
-    <Compile Include="Transport\Transport.cs" />
-    <Compile Include="Transport\FuelTransport\FuelTransport.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Routes\Route.cs" />
-    <Compile Include="Transport\FuelTransport\RouteTaxi\RouteTaxi.cs" />
-    <Compile Include="Transport\FuelTransport\RouteTaxi\DirectRouteTaxi.cs" />
     <Compile Include="CityTransport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Routes\Waypoint.cs" />
     <EmbeddedResource Include="CarsManagement.resx">
       <DependentUpon>CarsManagement.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,6 +108,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TransportLibrary\TransportLibrary.csproj">
+      <Project>{b286f1ce-e50b-401e-8943-bae818d44724}</Project>
+      <Name>TransportLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TransportLibrary;
 
 namespace Lab2
 {
@@ -37,9 +38,10 @@ namespace Lab2
         {
             Routes.Clear();
 
-            foreach (ID id in CityTransport.Routes.Keys)
+            foreach (RouteID routeID in CityTransport.Routes.Keys)
             {
-                Routes.Add(new Route(CityTransport.Routes[id]));
+                Route route = CityTransport.Routes[routeID].Clone() as Route;
+                Routes.Add(route);
             }
 
             routesList_SelectedIndexChanged(this, new EventArgs());
@@ -129,7 +131,7 @@ namespace Lab2
         {
             if (routeIdIn.Text != string.Empty)
             {
-                ID routeID = new ID(Convert.ToInt32(routeIdIn.Text));
+                RouteID routeID = new RouteID(Convert.ToInt32(routeIdIn.Text));
                 Route newRoute = new Route(routeID);
                 if (!Routes.Contains(newRoute))
                 {
@@ -190,46 +192,30 @@ namespace Lab2
                 // Delete extra routes //
 
                 List<ID> IDList = new List<ID>();
-                foreach (ID id in CityTransport.Routes.Keys)
+                foreach (RouteID routeID in CityTransport.Routes.Keys)
                 {
-                    if (!Routes.Contains(CityTransport.Routes[id]))
+                    if (!Routes.Contains(CityTransport.Routes[routeID]))
                     {
-                        IDList.Add(id);
+                        IDList.Add(routeID);
                     }
                 }
 
-                foreach (ID routeID in IDList)
+                foreach (RouteID routeID in IDList)
                 {
                     CityTransport.Routes.Remove(routeID);
                 }
                 
                 // Clear assignments to cars //
 
-                foreach (KeyValuePair<ID, Transport> item in CityTransport.Cars)
+                foreach (KeyValuePair<CarID, Transport> item in CityTransport.Cars)
                 {
-                    if (item.Value.Route != null)
+                    if ((item.Value as RouteTaxi) != null)
                     {
-                        if (!CityTransport.Routes.Keys.Contains(item.Value.Route.ID))
+                        if (((RouteTaxi)item.Value).RouteID != null)
                         {
-                            item.Value.Route = null;
-                        }
-                        else
-                        {
-                            if ((item.Value as CircularRouteTaxi) != null)
+                            if (!CityTransport.Routes.Keys.Contains(((RouteTaxi)item.Value).RouteID))
                             {
-                                if (CityTransport.Routes[item.Value.Route.ID].Waypoints.First() !=
-                                    CityTransport.Routes[item.Value.Route.ID].Waypoints.Last())
-                                {
-                                    item.Value.Route = null;
-                                }
-                            }
-                            else if ((item.Value as DirectRouteTaxi) != null)
-                            {
-                                if (CityTransport.Routes[item.Value.Route.ID].Waypoints.First() ==
-                                    CityTransport.Routes[item.Value.Route.ID].Waypoints.Last())
-                                {
-                                    item.Value.Route = null;
-                                }
+                                ((RouteTaxi)item.Value).RouteID = null;
                             }
                         }
                     }
@@ -342,7 +328,7 @@ namespace Lab2
 
             foreach (Waypoint wp in Waypoints)
             {
-                Routes[routesList.SelectedIndex].Waypoints.Add(wp);
+                Routes[routesList.SelectedIndex].AddWaypoint(wp);
             }
 
             changesSaved = false;

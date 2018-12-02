@@ -4,20 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab2
+namespace TransportLibrary
 {
-    public class ID : IEquatable<ID>
+    public abstract class ID : IEquatable<ID>, ICloneable
     {
-        public int _id { get; }
+        public string _id { get; protected set; }
 
-        public ID(int id)
+        public ID(string id)
         {
             _id = id;
         }
 
+        public abstract object Clone();
+
         public override bool Equals(object obj)
         {
-            return Equals(obj as ID);
+            return Equals(obj as CarID);
         }
 
         public bool Equals(ID other)
@@ -42,7 +44,7 @@ namespace Lab2
 
         public override int GetHashCode()
         {
-            return (_id != 0) ? _id.GetHashCode() : 0;
+            return (_id != string.Empty) ? _id.GetHashCode() : 0;
         }
     }
 }
