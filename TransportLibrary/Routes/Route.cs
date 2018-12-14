@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransportLibrary
 {
-    public class Route : IEquatable<Route>, ICloneable
+    public class Route : IEquatable<Route>
     {
         public RouteID ID { get; private set; }
         public List<Waypoint> Waypoints { get; private set; }
@@ -18,19 +18,16 @@ namespace TransportLibrary
             Waypoints = new List<Waypoint>();
         }
 
-        public object Clone()
+        public Route(Route route)
         {
-            Route route = this.MemberwiseClone() as Route;
+            ID = route.ID;
+            RouteType = route.RouteType;
 
-            route.ID = this.ID.Clone() as RouteID;
-
-            route.Waypoints = new List<Waypoint>();
-            foreach (Waypoint wp in this.Waypoints)
+            Waypoints = new List<Waypoint>();
+            foreach(Waypoint wp in route.Waypoints)
             {
-                route.Waypoints.Add(wp.Clone() as Waypoint);
+                Waypoints.Add(new Waypoint(wp));
             }
-
-            return route;
         }
 
         public void RemoveWaypoint(Waypoint wp)

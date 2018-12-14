@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransportLibrary
 {
-    public abstract class Transport : ICloneable
+    public abstract class Transport
     {
         public CarID ID { get; protected set; }
         public string Company { get; set; }
@@ -16,10 +16,6 @@ namespace TransportLibrary
             ID = id;
             Company = owner_company;
         }
-
-        public abstract void Move();
-
-        public abstract object Clone();
 
         public override string ToString()
         {

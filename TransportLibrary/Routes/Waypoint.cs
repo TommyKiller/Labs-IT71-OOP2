@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransportLibrary
 {
-    public class Waypoint : IEquatable<Waypoint>, ICloneable
+    public class Waypoint : IEquatable<Waypoint>
     {
         public string Adress { get; set; }
 
@@ -15,11 +15,9 @@ namespace TransportLibrary
             Adress = adress;
         }
 
-        public object Clone()
+        public Waypoint(Waypoint waypoint)
         {
-            Waypoint wp = this.MemberwiseClone() as Waypoint;
-            wp.Adress = String.Copy(this.Adress);
-            return wp;
+            Adress = String.Copy(waypoint.Adress);
         }
 
         public override bool Equals(object obj)

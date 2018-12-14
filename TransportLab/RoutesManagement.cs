@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransportLibrary;
 
-namespace Lab2
+namespace TransportLab
 {
     public partial class RoutesManagement : Form
     {
@@ -40,8 +40,7 @@ namespace Lab2
 
             foreach (RouteID routeID in CityTransport.Routes.Keys)
             {
-                Route route = CityTransport.Routes[routeID].Clone() as Route;
-                Routes.Add(route);
+                Routes.Add(new Route(CityTransport.Routes[routeID]));
             }
 
             routesList_SelectedIndexChanged(this, new EventArgs());

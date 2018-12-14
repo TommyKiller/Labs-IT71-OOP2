@@ -30,14 +30,10 @@ namespace TransportLibrary
             RouteID = routeID;
         }
 
-        public override object Clone()
+        public RouteTaxi(RouteTaxi taxi)
+            : base(taxi.ID, String.Copy(taxi.Company), taxi.FuelCapacity, taxi.FuelConsumption)
         {
-            RouteTaxi routeTaxi = this.MemberwiseClone() as RouteTaxi;
-            routeTaxi.Company = String.Copy(this.Company);
-            routeTaxi.RouteID = this.RouteID.Clone() as RouteID;
-            routeTaxi.ID = this.ID.Clone() as CarID;
-            routeTaxi.PropertyChanged = delegate { };
-            return routeTaxi;
+            RouteID = taxi.RouteID;
         }
 
         public override string ToString()

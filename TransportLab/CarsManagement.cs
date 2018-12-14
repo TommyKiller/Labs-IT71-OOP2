@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransportLibrary;
 
-namespace Lab2
+namespace TransportLab
 {
     public partial class CarsManagement : Form
     {
@@ -40,7 +40,10 @@ namespace Lab2
 
             foreach(CarID carID in CityTransport.Cars.Keys)
             {
-                Cars.Add(CityTransport.Cars[carID].Clone() as Transport);
+                if ((CityTransport.Cars[carID] as RouteTaxi) != null)
+                {
+                    Cars.Add(new RouteTaxi(CityTransport.Cars[carID] as RouteTaxi));
+                }
             }
 
             carsList_SelectedIndexChanged(this, new EventArgs());
@@ -65,7 +68,7 @@ namespace Lab2
                 case "Route taxi":
                     EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Register car");
                     editRouteTaxi.ShowDialog();
-                    if (editRouteTaxi.Car != null)
+                    if (editRouteTaxi.IsHandled)
                     {
                         Cars.Add(editRouteTaxi.Car);
                         carsList.SelectedIndex = Cars.Count - 1;
@@ -92,9 +95,10 @@ namespace Lab2
                 {
                     EditRouteTaxi editRouteTaxi = new EditRouteTaxi(carsIDList, "Edit car", (RouteTaxi)Cars[index]);
                     editRouteTaxi.ShowDialog();
-                    if (editRouteTaxi.Car != null)
+                    if (editRouteTaxi.IsHandled)
                     {
-                        Cars[index] = editRouteTaxi.Car.Clone() as RouteTaxi;
+                        Cars[index] = new RouteTaxi(editRouteTaxi.Car);
+
                         carsList.SelectedIndex = Cars.Count - 1;
                         carsList_SelectedIndexChanged(this, new EventArgs());
                         changesSaved = false;

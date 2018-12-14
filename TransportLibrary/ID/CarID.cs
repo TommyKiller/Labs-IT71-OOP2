@@ -12,12 +12,5 @@ namespace TransportLibrary
             : base("C" + id.ToString())
         {
         }
-
-        public override object Clone()
-        {
-            CarID carID = this.MemberwiseClone() as CarID;
-            carID._id = String.Copy(this._id);
-            return carID;
-        }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransportLibrary;
 
-namespace Lab2
+namespace TransportLab
 {
     public partial class EditRouteTaxi : Form
     {
@@ -27,6 +27,7 @@ namespace Lab2
                 car = (value as RouteTaxi != null) ? value : null;
             }
         }
+        public bool IsHandled { get; private set; }
 
         public EditRouteTaxi(List<CarID> carsIDList, string caption, RouteTaxi car = null)
         {
@@ -35,6 +36,7 @@ namespace Lab2
             CarsIDList = carsIDList;
             Text = caption;
             Car = car;
+            IsHandled = false;
 
             SetTypes();
             FillData();
@@ -46,22 +48,22 @@ namespace Lab2
             typesList.Items.Add(RouteTypes.Direct);
         }
 
-        private void LoadRoutes()
+        private void LoadRoutesID()
         {
-            routesList.Items.Clear();
+            routesIDList.Items.Clear();
             int index = -1;
 
             foreach (RouteID RouteID in CityTransport.Routes.Keys)
             {
-                if ((RouteTypes)typesList.SelectedValue == CityTransport.Routes[RouteID].RouteType)
+                if ((RouteTypes)typesList.SelectedItem == CityTransport.Routes[RouteID].RouteType)
                 {
                     ++index;
-                    routesList.Items.Add(CityTransport.Routes[RouteID]);
+                    routesIDList.Items.Add(RouteID);
                     if ((Car != null) && (Car.RouteID != null))
                     {
-                        if (CityTransport.Routes[RouteID].ID == Car.RouteID)
+                        if (Car.RouteID == RouteID)
                         {
-                            routesList.SelectedIndex = index;
+                            routesIDList.SelectedIndex = index;
                         }
                     }
                 }
@@ -69,19 +71,19 @@ namespace Lab2
 
             wpList.Items.Clear();
 
-            if (routesList.SelectedIndex < 0)
+            if (routesIDList.SelectedIndex < 0)
             {
-                routesList.SelectedIndex = routesList.Items.Count - 1;
+                routesIDList.SelectedIndex = routesIDList.Items.Count - 1;
             }
 
-            routesList_SelectedIndexChanged(this, new EventArgs());
+            routesIDList_SelectedIndexChanged(this, new EventArgs());
         }
 
         private void LoadWaypoints()
         {
             wpList.Items.Clear();
 
-            foreach (Waypoint wp in ((Route)routesList.SelectedItem).Waypoints)
+            foreach (Waypoint wp in CityTransport.Routes[(RouteID)routesIDList.SelectedItem].Waypoints)
             {
                 wpList.Items.Add(wp);
             }
@@ -106,7 +108,7 @@ namespace Lab2
                 fuelCapacityIn.Text = Car.FuelCapacity.ToString();
                 fuelCapacityIn.Enabled = false;
                 fuelConsumptionIn.Text = Car.FuelConsumption.ToString();
-                fuelCapacityIn.Enabled = false;
+                fuelConsumptionIn.Enabled = false;
             }
         }
 
@@ -114,15 +116,9 @@ namespace Lab2
         {
             if (carIDIn.Text == string.Empty)
                 throw new Exception("Enter car's ID!");
-            CarID carID = new CarID(Convert.ToInt32(carIDIn.Text));
             if (Car == null)
             {
-                if (CarsIDList.Contains(carID))
-                    throw new Exception("Car with that ID already exists!");
-            }
-            else
-            {
-                if (CarsIDList.Contains(carID) && (Car.ID != carID))
+                if (CarsIDList.Contains(new CarID(Convert.ToInt32(carIDIn.Text))))
                     throw new Exception("Car with that ID already exists!");
             }
             if (carCompanyIn.Text.Trim() == string.Empty)
@@ -135,7 +131,7 @@ namespace Lab2
                 throw new Exception("Fuel consumption rate of the car can't be more then it's fuel capacity!");
             if (typesList.SelectedItem == null)
                 throw new Exception("Choose type of the route!");
-            if (routesList.SelectedItem == null)
+            if (routesIDList.SelectedItem == null)
                 throw new Exception("Choose route!");
             return true;
         }
@@ -167,9 +163,9 @@ namespace Lab2
             }
         }
 
-        private void routesList_SelectedIndexChanged(object sender, EventArgs e)
+        private void routesIDList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (routesList.SelectedIndex > -1)
+            if (routesIDList.SelectedIndex > -1)
             {
                 LoadWaypoints();
 
@@ -216,7 +212,7 @@ namespace Lab2
                 {
                     if (CheckInput())
                     {
-                        RouteID routeID = ((Route)routesList.SelectedItem).ID;
+                        RouteID routeID = (RouteID)routesIDList.SelectedItem;
                         string company = carCompanyIn.Text.Trim();
                         int fuelCapacity = Convert.ToInt32(fuelCapacityIn.Text);
                         int fuelConsumption = Convert.ToInt32(fuelConsumptionIn.Text);
@@ -232,6 +228,7 @@ namespace Lab2
                             Car.RouteID = routeID;
                         }
 
+                        IsHandled = true;
                         changesSaved = true;
                         saveChanges.Enabled = false;
                     }
@@ -250,7 +247,7 @@ namespace Lab2
 
         private void typesList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadRoutes();
+            LoadRoutesID();
         }
     }
 }

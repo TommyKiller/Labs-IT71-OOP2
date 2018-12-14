@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B11E391A-1DCB-4A00-A1E4-CFE895152FF0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Lab2</RootNamespace>
-    <AssemblyName>Lab2</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>TransportLab</RootNamespace>
+    <AssemblyName>TransportLab</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -109,6 +109,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SerializeLibrary\SerializeLibrary.csproj">
+      <Project>{731492c5-175e-45e4-9528-549bc617f462}</Project>
+      <Name>SerializeLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TransportLibrary\TransportLibrary.csproj">
       <Project>{b286f1ce-e50b-401e-8943-bae818d44724}</Project>
       <Name>TransportLibrary</Name>

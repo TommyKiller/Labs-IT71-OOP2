@@ -12,12 +12,5 @@ namespace TransportLibrary
             : base("R" + id.ToString())
         {
         }
-
-        public override object Clone()
-        {
-            RouteID routeID = this.MemberwiseClone() as RouteID;
-            routeID._id = String.Copy(this._id);
-            return routeID;
-        }
     }
 }

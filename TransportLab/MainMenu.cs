@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Lab2
+namespace TransportLab
 {
     public partial class MainMenu : Form
     {

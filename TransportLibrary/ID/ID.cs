@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransportLibrary
 {
-    public abstract class ID : IEquatable<ID>, ICloneable
+    public abstract class ID : IEquatable<ID>
     {
         public string _id { get; protected set; }
 
@@ -15,11 +15,9 @@ namespace TransportLibrary
             _id = id;
         }
 
-        public abstract object Clone();
-
         public override bool Equals(object obj)
         {
-            return Equals(obj as CarID);
+            return Equals(obj as ID);
         }
 
         public bool Equals(ID other)

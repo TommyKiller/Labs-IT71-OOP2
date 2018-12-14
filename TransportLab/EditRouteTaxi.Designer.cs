@@ -1,4 +1,4 @@
-﻿namespace Lab2
+﻿namespace TransportLab
 {
     partial class EditRouteTaxi
     {
@@ -40,7 +40,7 @@
             this.wpList = new System.Windows.Forms.ListBox();
             this.carCompanyIn = new System.Windows.Forms.TextBox();
             this.companyLbl = new System.Windows.Forms.Label();
-            this.routesList = new System.Windows.Forms.ComboBox();
+            this.routesIDList = new System.Windows.Forms.ComboBox();
             this.cancelChanges = new System.Windows.Forms.Button();
             this.saveChanges = new System.Windows.Forms.Button();
             this.editCarPanel.SuspendLayout();
@@ -59,7 +59,7 @@
             this.editCarPanel.Controls.Add(this.wpList);
             this.editCarPanel.Controls.Add(this.carCompanyIn);
             this.editCarPanel.Controls.Add(this.companyLbl);
-            this.editCarPanel.Controls.Add(this.routesList);
+            this.editCarPanel.Controls.Add(this.routesIDList);
             this.editCarPanel.Controls.Add(this.cancelChanges);
             this.editCarPanel.Controls.Add(this.saveChanges);
             this.editCarPanel.Location = new System.Drawing.Point(12, 12);
@@ -168,15 +168,15 @@
             this.companyLbl.TabIndex = 15;
             this.companyLbl.Text = "Company:";
             // 
-            // routesList
+            // routesIDList
             // 
-            this.routesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.routesList.FormattingEnabled = true;
-            this.routesList.Location = new System.Drawing.Point(9, 46);
-            this.routesList.Name = "routesList";
-            this.routesList.Size = new System.Drawing.Size(156, 21);
-            this.routesList.TabIndex = 9;
-            this.routesList.SelectedIndexChanged += new System.EventHandler(this.routesList_SelectedIndexChanged);
+            this.routesIDList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.routesIDList.FormattingEnabled = true;
+            this.routesIDList.Location = new System.Drawing.Point(9, 46);
+            this.routesIDList.Name = "routesIDList";
+            this.routesIDList.Size = new System.Drawing.Size(156, 21);
+            this.routesIDList.TabIndex = 9;
+            this.routesIDList.SelectedIndexChanged += new System.EventHandler(this.routesIDList_SelectedIndexChanged);
             // 
             // cancelChanges
             // 
@@ -224,7 +224,7 @@
         private System.Windows.Forms.ListBox wpList;
         private System.Windows.Forms.TextBox carCompanyIn;
         private System.Windows.Forms.Label companyLbl;
-        private System.Windows.Forms.ComboBox routesList;
+        private System.Windows.Forms.ComboBox routesIDList;
         private System.Windows.Forms.Button cancelChanges;
         private System.Windows.Forms.Button saveChanges;
         private System.Windows.Forms.TextBox carIDIn;

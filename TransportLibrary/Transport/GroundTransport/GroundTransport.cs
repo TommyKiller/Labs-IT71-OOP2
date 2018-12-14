@@ -11,10 +11,5 @@ namespace TransportLibrary
         public GroundTransport(CarID id, string owner_company) : base(id, owner_company)
         {
         }
-
-        public override void Move()
-        {
-            // Move on the ground implementation //
-        }
     }
 }

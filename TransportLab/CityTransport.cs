@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransportLibrary;
 
-namespace Lab2
+namespace TransportLab
 {
     static class CityTransport
     {
