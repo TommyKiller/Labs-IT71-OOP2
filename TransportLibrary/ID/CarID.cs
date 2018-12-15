@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransportLibrary
 {
+    [Serializable]
     public class CarID : ID
     {
         public CarID(int id)

@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
 namespace TransportLibrary
 {
+    [Serializable]
     public abstract class FuelTransport : GroundTransport
     {
         private int _fuel_amount;
+
         public int FuelCapacity { get; private set; }
-        public int FuelConsumption { get;  private set; }
+        public int FuelConsumption { get; private set; }
         public int Fuel
         {
             get
@@ -40,6 +39,16 @@ namespace TransportLibrary
             FuelCapacity = max_fuel_amount;
             FuelConsumption = fuel_consumption;
             Fuel = max_fuel_amount;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
         }
     }
 }

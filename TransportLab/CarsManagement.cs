@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransportLibrary;
 
@@ -38,11 +34,11 @@ namespace TransportLab
         {
             Cars.Clear();
 
-            foreach(CarID carID in CityTransport.Cars.Keys)
+            foreach(CarID carID in Transport.Cars.Keys)
             {
-                if ((CityTransport.Cars[carID] as RouteTaxi) != null)
+                if ((Transport.Cars[carID] as RouteTaxi) != null)
                 {
-                    Cars.Add(new RouteTaxi(CityTransport.Cars[carID] as RouteTaxi));
+                    Cars.Add(new RouteTaxi(Transport.Cars[carID] as RouteTaxi));
                 }
             }
 
@@ -126,22 +122,22 @@ namespace TransportLab
 
                 foreach (Transport car in Cars)
                 {
-                    if (!CityTransport.Cars.Keys.Contains(car.ID))
+                    if (!Transport.Cars.Keys.Contains(car.ID))
                     {
-                        CityTransport.Cars.Add(car.ID, car);
+                        Transport.Cars.Add(car.ID, car);
                     }
                     else
                     {
-                        CityTransport.Cars[car.ID] = car;
+                        Transport.Cars[car.ID] = car;
                     }
                 }
                 
                 // Delete extra cars //
 
                 List<CarID> IDList = new List<CarID>();
-                foreach (CarID carID in CityTransport.Cars.Keys)
+                foreach (CarID carID in Transport.Cars.Keys)
                 {
-                    if (!Cars.Contains(CityTransport.Cars[carID]))
+                    if (!Cars.Contains(Transport.Cars[carID]))
                     {
                         IDList.Add(carID);
                     }
@@ -149,7 +145,7 @@ namespace TransportLab
 
                 foreach (CarID carID in IDList)
                 {
-                    CityTransport.Cars.Remove(carID);
+                    Transport.Cars.Remove(carID);
                 }
 
                 EnableSave(false);

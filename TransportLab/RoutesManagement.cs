@@ -38,9 +38,9 @@ namespace TransportLab
         {
             Routes.Clear();
 
-            foreach (RouteID routeID in CityTransport.Routes.Keys)
+            foreach (RouteID routeID in Route.Routes.Keys)
             {
-                Routes.Add(new Route(CityTransport.Routes[routeID]));
+                Routes.Add(new Route(Route.Routes[routeID]));
             }
 
             routesList_SelectedIndexChanged(this, new EventArgs());
@@ -178,22 +178,22 @@ namespace TransportLab
 
                 foreach (Route route in Routes)
                 {
-                    if (!CityTransport.Routes.Keys.Contains(route.ID))
+                    if (!Route.Routes.Keys.Contains(route.ID))
                     {
-                        CityTransport.Routes.Add(route.ID, route);
+                        Route.Routes.Add(route.ID, route);
                     }
                     else
                     {
-                        CityTransport.Routes[route.ID] = route;
+                        Route.Routes[route.ID] = route;
                     }
                 }
 
                 // Delete extra routes //
 
                 List<ID> IDList = new List<ID>();
-                foreach (RouteID routeID in CityTransport.Routes.Keys)
+                foreach (RouteID routeID in Route.Routes.Keys)
                 {
-                    if (!Routes.Contains(CityTransport.Routes[routeID]))
+                    if (!Routes.Contains(Route.Routes[routeID]))
                     {
                         IDList.Add(routeID);
                     }
@@ -201,18 +201,18 @@ namespace TransportLab
 
                 foreach (RouteID routeID in IDList)
                 {
-                    CityTransport.Routes.Remove(routeID);
+                    Route.Routes.Remove(routeID);
                 }
                 
                 // Clear assignments to cars //
 
-                foreach (KeyValuePair<CarID, Transport> item in CityTransport.Cars)
+                foreach (KeyValuePair<CarID, Transport> item in Transport.Cars)
                 {
                     if ((item.Value as RouteTaxi) != null)
                     {
                         if (((RouteTaxi)item.Value).RouteID != null)
                         {
-                            if (!CityTransport.Routes.Keys.Contains(((RouteTaxi)item.Value).RouteID))
+                            if (!Route.Routes.Keys.Contains(((RouteTaxi)item.Value).RouteID))
                             {
                                 ((RouteTaxi)item.Value).RouteID = null;
                             }

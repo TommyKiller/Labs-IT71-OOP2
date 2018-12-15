@@ -1,16 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using SerializeLibrary;
 
 namespace TransportLibrary
 {
-    public class Route : IEquatable<Route>
+    [Serializable]
+    public class Route : IEquatable<Route>, IXmlSerializable
     {
         public RouteID ID { get; private set; }
         public List<Waypoint> Waypoints { get; private set; }
         public RouteTypes RouteType { get; private set; }
+        public static Dictionary<RouteID, Route> Routes { get; set; }
+
+        public static List<RouteID> GetRoutesOfType(RouteTypes routeType)
+        {
+            List<RouteID> routesIDList = new List<RouteID>();
+
+            foreach (RouteID id in Routes.Keys)
+            {
+                if (Routes[id].RouteType == routeType)
+                {
+                    routesIDList.Add(id);
+                }
+            }
+
+            return routesIDList;
+        }
 
         public Route(RouteID id)
         {
@@ -24,7 +43,7 @@ namespace TransportLibrary
             RouteType = route.RouteType;
 
             Waypoints = new List<Waypoint>();
-            foreach(Waypoint wp in route.Waypoints)
+            foreach (Waypoint wp in route.Waypoints)
             {
                 Waypoints.Add(new Waypoint(wp));
             }
@@ -72,6 +91,21 @@ namespace TransportLibrary
         public override int GetHashCode()
         {
             return ID.GetHashCode();
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            throw new NotImplementedException();
         }
     }
 }

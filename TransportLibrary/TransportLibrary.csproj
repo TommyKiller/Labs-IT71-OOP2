@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TransportLibrary</RootNamespace>
     <AssemblyName>TransportLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,12 @@
     <Compile Include="Transport\GroundTransport\FuelTransport\RouteTaxi\RouteTaxi.cs" />
     <Compile Include="Transport\GroundTransport\GroundTransport.cs" />
     <Compile Include="Transport\Transport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SerializeLibrary\SerializeLibrary.csproj">
+      <Project>{731492c5-175e-45e4-9528-549bc617f462}</Project>
+      <Name>SerializeLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Xml;
 
 namespace TransportLibrary
 {
+    [Serializable]
     public class RouteTaxi : FuelTransport, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -22,6 +21,21 @@ namespace TransportLibrary
                 routeID = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("RouteID"));
             }
+        }
+
+        public static List<CarID> GetCarsOnRoute(RouteID routeID)
+        {
+            List<CarID> carsIDList = new List<CarID>();
+
+            foreach (CarID id in Cars.Keys)
+            {
+                if ((Cars[id] as RouteTaxi != null) && (((RouteTaxi)Cars[id]).RouteID == routeID))
+                {
+                    carsIDList.Add(id);
+                }
+            }
+
+            return carsIDList;
         }
 
         public RouteTaxi(CarID id, string owner_company, RouteID routeID, int max_fuel_amount, int fuel_consumption)
@@ -41,6 +55,16 @@ namespace TransportLibrary
             return (RouteID != null) ?
                 base.ToString() + " [" + RouteID.ToString() + "]" :
                 base.ToString() + " [Add route!]";
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
         }
     }
 }

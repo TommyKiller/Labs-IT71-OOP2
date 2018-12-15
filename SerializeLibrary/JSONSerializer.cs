@@ -13,30 +13,30 @@ namespace SerializeLibrary
             serializer = new JsonSerializer();
         }
 
-        public void Save<T>(string path, List<T> dataList)
+        public Dictionary<TKey, TValue> Load<TKey, TValue>(string path)
         {
-            using (StreamWriter streamWriter = new StreamWriter(path))
-            {
-                using (JsonWriter writer = new JsonTextWriter(streamWriter))
-                {
-                    serializer.Serialize(writer, dataList);
-                }
-            }
-        }
-
-        public List<T> Load<T>(string path)
-        {
-            List<T> data;
+            Dictionary<TKey, TValue> data;
 
             using (StreamReader streamWriter = new StreamReader(path))
             {
                 using (JsonReader writer = new JsonTextReader(streamWriter))
                 {
-                    data = serializer.Deserialize(writer) as List<T>;
+                    data = serializer.Deserialize(writer) as Dictionary<TKey, TValue>;
                 }
             }
 
             return data;
+        }
+
+        public void Save<TKey, TValue>(string path, Dictionary<TKey, TValue> data)
+        {
+            using (StreamWriter streamWriter = new StreamWriter(path))
+            {
+                using (JsonWriter writer = new JsonTextWriter(streamWriter))
+                {
+                    serializer.Serialize(writer, data);
+                }
+            }
         }
     }
 }

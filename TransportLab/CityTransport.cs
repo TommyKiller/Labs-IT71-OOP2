@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TransportLibrary;
+using SerializeLibrary;
 
 namespace TransportLab
 {
     static class CityTransport
     {
         public static ApplicationContext Context { get; set; }
-        public static Dictionary<CarID, Transport> Cars { get; set; }
-        public static Dictionary<RouteID, Route> Routes { get; set; }
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            Cars = new Dictionary<CarID, Transport>();
-            Routes = new Dictionary<RouteID, Route>();
+            BinarySerializer serializer = new BinarySerializer();
+            //Transport.Cars = serializer.Load<CarID, Transport>(@"d:\txt.txt");
+            //Route.Routes = serializer.Load<RouteID, Route>(@"d:\txt1.txt");
+            Transport.Cars = new Dictionary<CarID, Transport>();
+            Route.Routes = new Dictionary<RouteID, Route>();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Context = new ApplicationContext(new MainMenu());
             Application.Run(Context);
+
+            serializer.Save<CarID, Transport>(@"d:\txt.txt", Transport.Cars);
+            serializer.Save<RouteID, Route>(@"d:\txt1.txt", Route.Routes);
         }
     }
 }

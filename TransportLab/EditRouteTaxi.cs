@@ -53,9 +53,9 @@ namespace TransportLab
             routesIDList.Items.Clear();
             int index = -1;
 
-            foreach (RouteID RouteID in CityTransport.Routes.Keys)
+            foreach (RouteID RouteID in Route.Routes.Keys)
             {
-                if ((RouteTypes)typesList.SelectedItem == CityTransport.Routes[RouteID].RouteType)
+                if ((RouteTypes)typesList.SelectedItem == Route.Routes[RouteID].RouteType)
                 {
                     ++index;
                     routesIDList.Items.Add(RouteID);
@@ -83,7 +83,7 @@ namespace TransportLab
         {
             wpList.Items.Clear();
 
-            foreach (Waypoint wp in CityTransport.Routes[(RouteID)routesIDList.SelectedItem].Waypoints)
+            foreach (Waypoint wp in Route.Routes[(RouteID)routesIDList.SelectedItem].Waypoints)
             {
                 wpList.Items.Add(wp);
             }
@@ -95,7 +95,7 @@ namespace TransportLab
             {
                 foreach (RouteTypes type in typesList.Items.Cast<RouteTypes>())
                 {
-                    if (CityTransport.Routes[Car.RouteID].RouteType == type)
+                    if (Route.Routes[Car.RouteID].RouteType == type)
                     {
                         typesList.SelectedItem = type;
                         break;
