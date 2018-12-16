@@ -64,6 +64,7 @@ namespace TransportLibrary
 
         public override void ReadXml(XmlReader reader)
         {
+            base.ReadXml(reader);
             RouteID = new RouteID(0);
             RouteID.ReadXml(reader);
         }
