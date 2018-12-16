@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
-using System.Xml.Schema;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using SerializeLibrary;
 
 namespace TransportLibrary
 {
     [Serializable]
-    public class Route : IEquatable<Route>, IXmlSerializable
+    [DataContract]
+    public class Route : IEquatable<Route>
     {
+        [DataMember]
         public RouteID ID { get; private set; }
+        [DataMember]
         public List<Waypoint> Waypoints { get; private set; }
+        [DataMember]
         public RouteTypes RouteType { get; private set; }
+        [IgnoreDataMember]
+        [XmlIgnore]
         public static Dictionary<RouteID, Route> Routes { get; set; }
 
         public static List<RouteID> GetRoutesOfType(RouteTypes routeType)
@@ -31,10 +35,7 @@ namespace TransportLibrary
             return routesIDList;
         }
 
-        private Route()
-        {
-
-        }
+        private Route() { }
 
         public Route(RouteID id)
         {
@@ -96,42 +97,6 @@ namespace TransportLibrary
         public override int GetHashCode()
         {
             return ID.GetHashCode();
-        }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            ID = new RouteID(0);
-            ID.ReadXml(reader);
-            RouteType = (RouteTypes)Int32.Parse(reader["RouteType"]);
-
-            if (reader.ReadToDescendant("WaypointsList"))
-            {
-                while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "WaypointsList")
-                {
-                    Waypoint wp = new Waypoint("");
-                    wp.ReadXml(reader);
-                    Waypoints.Add(wp);
-                }
-            }
-            reader.Read();
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteAttributeString("RouteType", RouteType.ToString());
-            writer.WriteAttributeString("RouteID", ID.ToString());
-
-            foreach(Waypoint wp in Waypoints)
-            {
-                writer.WriteStartElement("WaypointsList");
-                wp.WriteXml(writer);
-                writer.WriteEndElement();
-            }
         }
     }
 }

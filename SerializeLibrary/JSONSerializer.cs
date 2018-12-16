@@ -1,41 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
+using System.Runtime.Serialization.Json;
+using TransportLibrary;
 
 namespace SerializeLibrary
 {
     public class JSONSerializer : ISerialize
     {
-        private readonly JsonSerializer serializer;
-
-        public JSONSerializer()
+        public List<T> Load<T>(string path)
         {
-            serializer = new JsonSerializer();
-        }
+            List<T> data = new List<T>();
+            FileInfo file = new FileInfo(path);
 
-        public Dictionary<TKey, TValue> Load<TKey, TValue>(string path)
-        {
-            Dictionary<TKey, TValue> data;
-
-            using (StreamReader streamWriter = new StreamReader(path))
+            if (file.Exists)
             {
-                using (JsonReader writer = new JsonTextReader(streamWriter))
+                using (FileStream fs = new FileStream(path, FileMode.Open))
                 {
-                    data = serializer.Deserialize(writer) as Dictionary<TKey, TValue>;
+                    DataContractJsonSerializer reader = new DataContractJsonSerializer(typeof(List<T>));
+                    data = (List<T>)reader.ReadObject(fs);
                 }
             }
 
             return data;
         }
 
-        public void Save<TKey, TValue>(string path, Dictionary<TKey, TValue> data)
+        public void Save<T>(string path, List<T> data)
         {
-            using (StreamWriter streamWriter = new StreamWriter(path))
+            using (FileStream fs = new FileStream(path + ".json", FileMode.Create))
             {
-                using (JsonWriter writer = new JsonTextWriter(streamWriter))
-                {
-                    serializer.Serialize(writer, data);
-                }
+                DataContractJsonSerializer writer = new DataContractJsonSerializer(typeof(List<T>));
+                writer.WriteObject(fs, data);
             }
         }
     }

@@ -1,42 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace SerializeLibrary
 {
     public class XMLSerializer : ISerialize
     {
-        public Dictionary<TKey, TValue> Load<TKey, TValue>(string path)
+        public List<T> Load<T>(string path)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(XmlSerializableDictionary<TKey, TValue>));
-            XmlSerializableDictionary<TKey, TValue> tempDict;
+            List<T> data = new List<T>();
+            FileInfo file = new FileInfo(path);
 
-            using (StreamReader streamReader = new StreamReader(path))
+            if (file.Exists)
             {
-                tempDict = serializer.Deserialize(streamReader) as XmlSerializableDictionary<TKey, TValue>;
-            }
-
-            Dictionary<TKey, TValue> data = new Dictionary<TKey, TValue>();
-            foreach (KeyValuePair<TKey, TValue> pair in tempDict)
-            {
-                data.Add(pair.Key, pair.Value);
+                using (FileStream stream = new FileStream(path, FileMode.Open))
+                {
+                    using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(stream, new XmlDictionaryReaderQuotas()))
+                    {
+                        DataContractSerializer serializer = new DataContractSerializer(typeof(List<T>));
+                        data = (List<T>)serializer.ReadObject(reader);
+                    }
+                }
             }
 
             return data;
         }
 
-        public void Save<TKey, TValue>(string path, Dictionary<TKey, TValue> data)
+        public void Save<T>(string path, List<T> data)
         {
-            XmlSerializableDictionary<TKey, TValue> tempDict = new XmlSerializableDictionary<TKey, TValue>();
-            foreach(KeyValuePair<TKey, TValue> pair in data)
+            using (FileStream stream = new FileStream(path + ".xml", FileMode.Create))
             {
-                tempDict.Add(pair.Key, pair.Value);
-            }
-
-            XmlSerializer serializer = new XmlSerializer(typeof(XmlSerializableDictionary<TKey, TValue>));
-            using (StreamWriter streamWriter = new StreamWriter(path))
-            {
-                serializer.Serialize(streamWriter, tempDict);
+                using (XmlDictionaryWriter writer = XmlDictionaryWriter.CreateTextWriter(stream))
+                {
+                    DataContractSerializer serializator = new DataContractSerializer(typeof(List<T>));
+                    serializator.WriteObject(writer, data);
+                }
             }
         }
     }

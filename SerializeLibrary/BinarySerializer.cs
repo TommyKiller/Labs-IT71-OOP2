@@ -14,21 +14,25 @@ namespace SerializeLibrary
             serializer = new BinaryFormatter();
         }
 
-        public Dictionary<TKey, TValue> Load<TKey, TValue>(string path)
+        public List<T> Load<T>(string path)
         {
-            Dictionary<TKey, TValue> data;
+            List<T> data = new List<T>();
+            FileInfo file = new FileInfo(path);
 
-            using (FileStream stream = new FileStream(path, FileMode.Open))
+            if (file.Exists)
             {
-                data = (Dictionary<TKey, TValue>)serializer.Deserialize(stream);
+                using (FileStream stream = new FileStream(path, FileMode.Open))
+                {
+                    data = (List<T>)serializer.Deserialize(stream);
+                }
             }
 
             return data;
         }
 
-        public void Save<TKey, TValue>(string path, Dictionary<TKey, TValue> data)
+        public void Save<T>(string path, List<T> data)
         {
-            using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
+            using (FileStream stream = new FileStream(path + ".bin", FileMode.Create))
             {
                 serializer.Serialize(stream, data);
             }

@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace TransportLibrary
 {
     [Serializable]
-    public abstract class ID : IEquatable<ID>, IXmlSerializable
+    [DataContract]
+    public abstract class ID : IEquatable<ID>
     {
+        [DataMember]
         public string _id { get; private set; }
 
         public ID(string id)
@@ -43,21 +43,6 @@ namespace TransportLibrary
         public override int GetHashCode()
         {
             return (_id != string.Empty) ? _id.GetHashCode() : 0;
-        }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            _id = reader["ID"];
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteAttributeString("ID", _id);
         }
     }
 }

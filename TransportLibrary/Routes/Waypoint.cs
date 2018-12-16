@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace TransportLibrary
 {
     [Serializable]
-    public class Waypoint : IEquatable<Waypoint>, IXmlSerializable
+    [DataContract]
+    public class Waypoint : IEquatable<Waypoint>
     {
+        [DataMember]
         public string Adress { get; set; }
 
         public Waypoint(string adress)
@@ -48,21 +48,6 @@ namespace TransportLibrary
         public override string ToString()
         {
             return Adress;
-        }
-
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            Adress = reader["Adress"];
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteAttributeString("Adress", Adress);
         }
     }
 }

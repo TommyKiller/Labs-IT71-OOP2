@@ -28,49 +28,73 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.editCarBtn = new System.Windows.Forms.Button();
-            this.editRouteBtn = new System.Windows.Forms.Button();
-            this.exitBtn = new System.Windows.Forms.Button();
+            this.EditCars = new System.Windows.Forms.Button();
+            this.EditRoutes = new System.Windows.Forms.Button();
+            this.Exit = new System.Windows.Forms.Button();
+            this.SaveData = new System.Windows.Forms.Button();
+            this.LoadData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // editCarBtn
+            // EditCars
             // 
-            this.editCarBtn.Location = new System.Drawing.Point(54, 12);
-            this.editCarBtn.Name = "editCarBtn";
-            this.editCarBtn.Size = new System.Drawing.Size(126, 23);
-            this.editCarBtn.TabIndex = 2;
-            this.editCarBtn.Text = "Cars Management";
-            this.editCarBtn.UseVisualStyleBackColor = true;
-            this.editCarBtn.Click += new System.EventHandler(this.editCarBtn_Click);
+            this.EditCars.Location = new System.Drawing.Point(51, 12);
+            this.EditCars.Name = "EditCars";
+            this.EditCars.Size = new System.Drawing.Size(126, 23);
+            this.EditCars.TabIndex = 2;
+            this.EditCars.Text = "Cars Management";
+            this.EditCars.UseVisualStyleBackColor = true;
+            this.EditCars.Click += new System.EventHandler(this.EditCars_Click);
             // 
-            // editRouteBtn
+            // EditRoutes
             // 
-            this.editRouteBtn.Location = new System.Drawing.Point(54, 41);
-            this.editRouteBtn.Name = "editRouteBtn";
-            this.editRouteBtn.Size = new System.Drawing.Size(126, 23);
-            this.editRouteBtn.TabIndex = 3;
-            this.editRouteBtn.Text = "Routes Management";
-            this.editRouteBtn.UseVisualStyleBackColor = true;
-            this.editRouteBtn.Click += new System.EventHandler(this.editRouteBtn_Click);
+            this.EditRoutes.Location = new System.Drawing.Point(51, 41);
+            this.EditRoutes.Name = "EditRoutes";
+            this.EditRoutes.Size = new System.Drawing.Size(126, 23);
+            this.EditRoutes.TabIndex = 3;
+            this.EditRoutes.Text = "Routes Management";
+            this.EditRoutes.UseVisualStyleBackColor = true;
+            this.EditRoutes.Click += new System.EventHandler(this.EditRoutes_Click);
             // 
-            // exitBtn
+            // Exit
             // 
-            this.exitBtn.Location = new System.Drawing.Point(54, 70);
-            this.exitBtn.Name = "exitBtn";
-            this.exitBtn.Size = new System.Drawing.Size(126, 23);
-            this.exitBtn.TabIndex = 4;
-            this.exitBtn.Text = "Exit";
-            this.exitBtn.UseVisualStyleBackColor = true;
-            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
+            this.Exit.Location = new System.Drawing.Point(51, 99);
+            this.Exit.Name = "Exit";
+            this.Exit.Size = new System.Drawing.Size(126, 23);
+            this.Exit.TabIndex = 4;
+            this.Exit.Text = "Exit";
+            this.Exit.UseVisualStyleBackColor = true;
+            this.Exit.Click += new System.EventHandler(this.Exit_Click);
+            // 
+            // SaveData
+            // 
+            this.SaveData.Location = new System.Drawing.Point(51, 70);
+            this.SaveData.Name = "SaveData";
+            this.SaveData.Size = new System.Drawing.Size(60, 23);
+            this.SaveData.TabIndex = 5;
+            this.SaveData.Text = "Save";
+            this.SaveData.UseVisualStyleBackColor = true;
+            this.SaveData.Click += new System.EventHandler(this.SaveData_Click);
+            // 
+            // LoadData
+            // 
+            this.LoadData.Location = new System.Drawing.Point(117, 70);
+            this.LoadData.Name = "LoadData";
+            this.LoadData.Size = new System.Drawing.Size(60, 23);
+            this.LoadData.TabIndex = 6;
+            this.LoadData.Text = "Load";
+            this.LoadData.UseVisualStyleBackColor = true;
+            this.LoadData.Click += new System.EventHandler(this.LoadData_Click);
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(229, 105);
-            this.Controls.Add(this.exitBtn);
-            this.Controls.Add(this.editRouteBtn);
-            this.Controls.Add(this.editCarBtn);
+            this.ClientSize = new System.Drawing.Size(229, 134);
+            this.Controls.Add(this.LoadData);
+            this.Controls.Add(this.SaveData);
+            this.Controls.Add(this.Exit);
+            this.Controls.Add(this.EditRoutes);
+            this.Controls.Add(this.EditCars);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainMenu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -80,9 +104,11 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button editCarBtn;
-        private System.Windows.Forms.Button editRouteBtn;
-        private System.Windows.Forms.Button exitBtn;
+        private System.Windows.Forms.Button EditCars;
+        private System.Windows.Forms.Button EditRoutes;
+        private System.Windows.Forms.Button Exit;
+        private System.Windows.Forms.Button SaveData;
+        private System.Windows.Forms.Button LoadData;
     }
 }
 

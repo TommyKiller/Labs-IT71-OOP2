@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,12 +53,6 @@
     <Compile Include="Transport\GroundTransport\FuelTransport\RouteTaxi\RouteTaxi.cs" />
     <Compile Include="Transport\GroundTransport\GroundTransport.cs" />
     <Compile Include="Transport\Transport.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SerializeLibrary\SerializeLibrary.csproj">
-      <Project>{731492c5-175e-45e4-9528-549bc617f462}</Project>
-      <Name>SerializeLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

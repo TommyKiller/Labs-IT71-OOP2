@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using TransportLibrary;
-using SerializeLibrary;
 
 namespace TransportLab
 {
@@ -15,19 +14,13 @@ namespace TransportLab
         [STAThread]
         static void Main()
         {
-            XMLSerializer serializer = new XMLSerializer();
-            Transport.Cars = serializer.Load<CarID, Transport>(@"d:\txt.txt");
-            //Route.Routes = serializer.Load<RouteID, Route>(@"d:\txt1.txt");
             Transport.Cars = new Dictionary<CarID, Transport>();
             Route.Routes = new Dictionary<RouteID, Route>();
-
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Context = new ApplicationContext(new MainMenu());
             Application.Run(Context);
-
-            serializer.Save<CarID, Transport>(@"d:\txt.txt", Transport.Cars);
-            serializer.Save<RouteID, Route>(@"d:\txt1.txt", Route.Routes);
         }
     }
 }

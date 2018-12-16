@@ -17,21 +17,35 @@ namespace TransportLab
             InitializeComponent();
         }
 
-        private void editCarBtn_Click(object sender, EventArgs e)
+        private void EditCars_Click(object sender, EventArgs e)
         {
             CityTransport.Context.MainForm = new CarsManagement();
             Close();
             CityTransport.Context.MainForm.Show();
         }
 
-        private void editRouteBtn_Click(object sender, EventArgs e)
+        private void EditRoutes_Click(object sender, EventArgs e)
         {
             CityTransport.Context.MainForm = new RoutesManagement();
             Close();
             CityTransport.Context.MainForm.Show();
         }
 
-        private void exitBtn_Click(object sender, EventArgs e)
+        private void SaveData_Click(object sender, EventArgs e)
+        {
+            CityTransport.Context.MainForm = new SaveForm();
+            Close();
+            CityTransport.Context.MainForm.Show();
+        }
+
+        private void LoadData_Click(object sender, EventArgs e)
+        {
+            CityTransport.Context.MainForm = new LoadForm();
+            Close();
+            CityTransport.Context.MainForm.Show();
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
         {
             Close();
         }
