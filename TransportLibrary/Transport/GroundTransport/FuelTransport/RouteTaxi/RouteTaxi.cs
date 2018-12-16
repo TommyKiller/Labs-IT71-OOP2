@@ -38,6 +38,11 @@ namespace TransportLibrary
             return carsIDList;
         }
 
+        private RouteTaxi()
+        {
+
+        }
+
         public RouteTaxi(CarID id, string owner_company, RouteID routeID, int max_fuel_amount, int fuel_consumption)
             : base(id, owner_company, max_fuel_amount, fuel_consumption)
         {
@@ -59,12 +64,14 @@ namespace TransportLibrary
 
         public override void ReadXml(XmlReader reader)
         {
-            base.ReadXml(reader);
+            RouteID = new RouteID(0);
+            RouteID.ReadXml(reader);
         }
 
         public override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
+            writer.WriteAttributeString("RouteID", RouteID.ToString());
         }
     }
 }

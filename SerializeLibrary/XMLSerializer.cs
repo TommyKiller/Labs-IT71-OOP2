@@ -11,9 +11,9 @@ namespace SerializeLibrary
             XmlSerializer serializer = new XmlSerializer(typeof(XmlSerializableDictionary<TKey, TValue>));
             XmlSerializableDictionary<TKey, TValue> tempDict;
 
-            using (StreamReader streamWriter = new StreamReader(path))
+            using (StreamReader streamReader = new StreamReader(path))
             {
-                tempDict = serializer.Deserialize(streamWriter) as XmlSerializableDictionary<TKey, TValue>;
+                tempDict = serializer.Deserialize(streamReader) as XmlSerializableDictionary<TKey, TValue>;
             }
 
             Dictionary<TKey, TValue> data = new Dictionary<TKey, TValue>();

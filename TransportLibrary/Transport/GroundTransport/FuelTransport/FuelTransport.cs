@@ -33,6 +33,10 @@ namespace TransportLibrary
             }
         }
 
+        protected FuelTransport()
+        {
+
+        }
         public FuelTransport(CarID id, string owner_company, int max_fuel_amount, int fuel_consumption)
             : base(id, owner_company)
         {
@@ -44,11 +48,17 @@ namespace TransportLibrary
         public override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
+            FuelCapacity = Int32.Parse(reader["FuelCapacity"]);
+            FuelConsumption = Int32.Parse(reader["FuelConsumption"]);
+            Fuel = Int32.Parse(reader["Fuel"]);
         }
 
         public override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
+            writer.WriteAttributeString("FuelCapacity", FuelCapacity.ToString());
+            writer.WriteAttributeString("FuelConsumption", FuelConsumption.ToString());
+            writer.WriteAttributeString("Fuel", Fuel.ToString());
         }
     }
 }

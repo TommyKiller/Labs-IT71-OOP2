@@ -23,7 +23,7 @@ namespace SerializeLibrary
             reader.Read();
             if (wasEmpty)
                 return;
-            while (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+            while (reader.NodeType != XmlNodeType.EndElement)
             {
                 reader.ReadStartElement("item");
                 reader.ReadStartElement("key");

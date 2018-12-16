@@ -57,12 +57,12 @@ namespace TransportLibrary
 
         public void ReadXml(XmlReader reader)
         {
-            throw new NotImplementedException();
+            Adress = reader["Adress"];
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteAttributeString("Adress", Adress);
         }
     }
 }

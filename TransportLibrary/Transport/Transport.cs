@@ -13,6 +13,11 @@ namespace TransportLibrary
         public string Company { get; set; }
         public static Dictionary<CarID, Transport> Cars { get; set; }
 
+        protected Transport()
+        {
+
+        }
+
         public Transport(CarID id, string owner_company)
         {
             ID = id;
@@ -31,12 +36,15 @@ namespace TransportLibrary
 
         public virtual void ReadXml(XmlReader reader)
         {
-            throw new NotImplementedException();
+            ID = new CarID(0);
+            ID.ReadXml(reader);
+            Company = reader["Company"];
         }
 
         public virtual void WriteXml(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteAttributeString("CarID", ID.ToString());
+            writer.WriteAttributeString("Company", Company);
         }
     }
 }

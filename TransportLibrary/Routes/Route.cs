@@ -31,6 +31,11 @@ namespace TransportLibrary
             return routesIDList;
         }
 
+        private Route()
+        {
+
+        }
+
         public Route(RouteID id)
         {
             ID = id;
@@ -100,12 +105,33 @@ namespace TransportLibrary
 
         public void ReadXml(XmlReader reader)
         {
-            throw new NotImplementedException();
+            ID = new RouteID(0);
+            ID.ReadXml(reader);
+            RouteType = (RouteTypes)Int32.Parse(reader["RouteType"]);
+
+            if (reader.ReadToDescendant("WaypointsList"))
+            {
+                while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "WaypointsList")
+                {
+                    Waypoint wp = new Waypoint("");
+                    wp.ReadXml(reader);
+                    Waypoints.Add(wp);
+                }
+            }
+            reader.Read();
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            writer.WriteAttributeString("RouteType", RouteType.ToString());
+            writer.WriteAttributeString("RouteID", ID.ToString());
+
+            foreach(Waypoint wp in Waypoints)
+            {
+                writer.WriteStartElement("WaypointsList");
+                wp.WriteXml(writer);
+                writer.WriteEndElement();
+            }
         }
     }
 }

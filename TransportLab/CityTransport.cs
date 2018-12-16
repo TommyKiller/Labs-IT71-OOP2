@@ -15,8 +15,8 @@ namespace TransportLab
         [STAThread]
         static void Main()
         {
-            BinarySerializer serializer = new BinarySerializer();
-            //Transport.Cars = serializer.Load<CarID, Transport>(@"d:\txt.txt");
+            XMLSerializer serializer = new XMLSerializer();
+            Transport.Cars = serializer.Load<CarID, Transport>(@"d:\txt.txt");
             //Route.Routes = serializer.Load<RouteID, Route>(@"d:\txt1.txt");
             Transport.Cars = new Dictionary<CarID, Transport>();
             Route.Routes = new Dictionary<RouteID, Route>();
