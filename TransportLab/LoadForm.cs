@@ -36,23 +36,26 @@ namespace TransportLab
 
         private void SerializerTypes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (SerializerTypes.SelectedItem)
+            if (Directory.Exists(@"..\Saves\"))
             {
-                case Serializers.Binary:
-                    files = Directory.GetFiles(@"..\Saves\", "*.bin");
-                    break;
-                case Serializers.XML:
-                    files = Directory.GetFiles(@"..\Saves\", "*.xml");
-                    break;
-                case Serializers.JSON:
-                    files = Directory.GetFiles(@"..\Saves\", "*.json");
-                    break;
-            }
+                switch (SerializerTypes.SelectedItem)
+                {
+                    case Serializers.Binary:
+                        files = Directory.GetFiles(@"..\Saves\", "*.bin");
+                        break;
+                    case Serializers.XML:
+                        files = Directory.GetFiles(@"..\Saves\", "*.xml");
+                        break;
+                    case Serializers.JSON:
+                        files = Directory.GetFiles(@"..\Saves\", "*.json");
+                        break;
+                }
 
-            FilesList.Items.Clear();
-            foreach (string file in files)
-            {
-                FilesList.Items.Add(file.Split('\\').Last());
+                FilesList.Items.Clear();
+                foreach (string file in files)
+                {
+                    FilesList.Items.Add(file.Split('\\').Last());
+                }
             }
 
             if (FilesList.Items.Count > 0)

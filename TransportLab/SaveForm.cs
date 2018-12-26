@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 using SerializeLibrary;
 using TransportLibrary;
@@ -41,6 +42,10 @@ namespace TransportLab
         {
             if (FileNameIn.Text != String.Empty)
             {
+                if (!Directory.Exists(@"..\Saves\"))
+                {
+                    Directory.CreateDirectory(@"..\Saves\");
+                }
                 switch (SerializerTypes.SelectedItem)
                 {
                     case Serializers.Binary:
